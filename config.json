@@ -1,0 +1,39 @@
+{
+  "extensions": [
+    {
+      "id": "nidjdackonjofdcclfbdcapbkgghcdjf",
+      "name": "Accessibility Checker by WebToffee",
+      "competitors": [
+        { "id": "djcglbmbegflehmbfleechkjhmedcopn", "name": "Siteimprove" },
+        { "id": "lkcagbfjnkomcinoddgooolagloogehp", "name": "IBM Equal Access" },
+        { "id": "jbbplnpkjmmeebjpijfedlgcdilocofh", "name": "WAVE" }
+      ],
+      "keywords": [
+        "accessibility checker",
+        "wcag checker",
+        "web accessibility",
+        "ada compliance",
+        "accessibility audit",
+        "color contrast checker",
+        "aria checker",
+        "accessibility testing"
+      ]
+    }
+  ],
+  "results_depth": 50,
+  "request_delay_seconds": 2.0,
+  "slack": {
+    "enabled": true,
+    "webhook_url": "",
+    "mention_on_decline": "@channel"
+  },
+  "email": {
+    "enabled": false,
+    "to": "your@email.com",
+    "from": "tracker@yourdomain.com",
+    "smtp_host": "smtp.gmail.com",
+    "smtp_port": 465,
+    "username": "your@gmail.com",
+    "password": "your-app-password-here"
+  }
+}

@@ -1,0 +1,4 @@
+secrets.json
+data/tracker.log
+__pycache__/
+*.pyc
