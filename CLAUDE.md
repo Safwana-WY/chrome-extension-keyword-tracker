@@ -21,6 +21,7 @@ Competitor IDs:
 - Siteimprove: `djcglbmbegflehmbfleechkjhmedcopn`
 - IBM Equal Access: `lkcagbfjnkomcinoddgooolagloogehp`
 - WAVE: `jbbplnpkjmmeebjpijfedlgcdilocofh`
+- Silktide: `mpobacholfblmnpnfbiomjkecoojakah`
 
 ## Commands
 
