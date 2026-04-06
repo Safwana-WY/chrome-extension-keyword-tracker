@@ -84,6 +84,15 @@ Add an entry to the `extensions` array in `config.json`. No code changes require
 }
 ```
 
+## Keeping the dashboard in sync
+
+After any change to `config.json` (keywords, extensions, competitors), regenerate and push the dashboard immediately so GitHub Pages reflects the latest config:
+
+```bash
+python3 tracker.py --dry
+git add index.html && git commit -m "Regenerate dashboard" && git push
+```
+
 ## Git workflow
 
 After any code or config changes, push to GitHub immediately:
