@@ -15,7 +15,7 @@ Dashboard (GitHub Pages): https://safwana-wy.github.io/chrome-extension-keyword-
 
 | Extension | ID | Competitors |
 |---|---|---|
-| Accessibility Checker by WebToffee | `nidjdackonjofdcclfbdcapbkgghcdjf` | Siteimprove, IBM Equal Access, WAVE |
+| Accessibility Checker by WebToffee | `nidjdackonjofdcclfbdcapbkgghcdjf` | Siteimprove, IBM Equal Access, WAVE, Silktide |
 
 Competitor IDs:
 - Siteimprove: `djcglbmbegflehmbfleechkjhmedcopn`
@@ -56,7 +56,7 @@ Cron is registered on the local machine. The Mac must be on and awake at 10am IS
 
 **How `fetch_users()` works:** Fetches the CWS detail page and extracts user count, rating, and review count via regex. Stores as `_users`, `_rating`, `_reviews`.
 
-**`config.json`** — single source of truth for all extension definitions, keywords, and notification settings.
+**`config.json`** — single source of truth for all extension definitions, keywords, and notification settings. Currently tracking 17 keywords × 5 extensions; each run takes ~3 minutes (2s delay per request). Slack posts to `#chrome-extension-keyword-tracking`.
 
 **Data flow:**
 - Positions stored in `data/positions.json`: `{ "YYYY-MM-DD": { "ext-id": { "keyword": position, "_users": N, "_rating": F, "_reviews": N } } }`
