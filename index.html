@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CWS Keyword Tracker</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f1f5f9; color: #1e293b; font-size: 14px; }
+
+    /* ── Header ── */
+    .header { background: linear-gradient(135deg, #1d4ed8, #2563eb); color: #fff;
+               padding: 18px 32px; display: flex; justify-content: space-between; align-items: center; }
+    .header h1 { font-size: 1.15rem; font-weight: 700; letter-spacing: -.02em; }
+    .header p  { font-size: 0.78rem; opacity: .72; margin-top: 3px; }
+    .header .updated { font-size: 0.72rem; opacity: .6; text-align: right; }
+
+    /* ── Tabs ── */
+    .tab-bar { background: #1e40af; padding: 0 32px; display: flex; gap: 2px; }
+    .tab { background: transparent; border: none; color: rgba(255,255,255,.65);
+             padding: 12px 20px; font-size: .85rem; font-weight: 500; cursor: pointer;
+             border-bottom: 3px solid transparent; transition: all .15s; }
+    .tab:hover  { color: #fff; }
+    .tab.active { color: #fff; border-bottom-color: #fff; background: rgba(255,255,255,.1); }
+
+    /* ── Layout ── */
+    .container { max-width: 1400px; margin: 0 auto; padding: 24px 32px; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .section-title { font-size: .78rem; font-weight: 700; text-transform: uppercase;
+                       letter-spacing: .07em; color: #94a3b8; margin: 28px 0 12px; }
+
+    /* ── Stat cards ── */
+    .stats { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-bottom: 28px; }
+    .card { background: #fff; border-radius: 10px; padding: 18px 20px;
+              box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+    .card .value { font-size: 1.75rem; font-weight: 800; color: #2563eb; line-height: 1; }
+    .card .label { font-size: .7rem; text-transform: uppercase; letter-spacing: .06em;
+                    color: #94a3b8; margin-top: 5px; }
+    .card.c-green .value { color: #16a34a; }
+    .card.c-red   .value { color: #dc2626; }
+    .card.c-blue  .value { color: #0891b2; }
+    .inst-val { font-size: 1.75rem; font-weight: 800; color: #0891b2; }
+
+    /* ── Table wrapper ── */
+    .table-wrap { background: #fff; border-radius: 10px;
+                   box-shadow: 0 1px 3px rgba(0,0,0,.08); overflow-x: auto; }
+    .table-title { padding: 13px 18px; font-size: .82rem; font-weight: 600; color: #475569;
+                    border-bottom: 1px solid #e2e8f0; background: #f8fafc;
+                    display: flex; justify-content: space-between; align-items: center; }
+    .table-title .legend { display: flex; gap: 16px; font-weight: 400; font-size: .75rem; color: #64748b; }
+    .legend-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th { padding: 9px 13px; text-align: left; font-size: .68rem; text-transform: uppercase;
+           letter-spacing: .06em; color: #94a3b8; background: #f8fafc;
+           border-bottom: 1px solid #e2e8f0; white-space: nowrap; }
+    td { padding: 9px 13px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(0,0,0,.012); }
+
+    .kw-cell   { font-weight: 500; min-width: 200px; }
+    .pos-cell  { font-size: .95rem; font-weight: 700; min-width: 90px; }
+    .trend-cell { min-width: 150px; }
+    .pos-num  { color: #1e293b; }
+    .pos-none { font-size: .75rem; color: #cbd5e1; font-weight: 400; }
+
+    .trend-up     { color: #16a34a; font-weight: 600; }
+    .trend-down   { color: #dc2626; font-weight: 600; }
+    .trend-stable { color: #94a3b8; }
+    .trend-new    { color: #7c3aed; font-weight: 600; }
+    .trend-none   { color: #cbd5e1; }
+    small         { font-weight: 400; opacity: .72; }
+
+    .row-down td { background: #fff5f5; }
+    .row-up   td { background: #f0fdf4; }
+    .row-new  td { background: #faf5ff; }
+    .row-none    { opacity: .6; }
+
+    .comp-cell  { text-align: center; min-width: 120px; font-size: .82rem; }
+    .comp-none  { color: #cbd5e1; }
+    .comp-win   { color: #15803d; background: #f0fdf4; }
+    .comp-lose  { color: #b91c1c; background: #fff5f5; }
+    .comp-tie   { color: #6b7280; }
+
+    .badge-win  { font-size: .65rem; background: #dcfce7; color: #15803d; padding: 1px 5px; border-radius: 3px; margin-left: 3px; }
+    .badge-lose { font-size: .65rem; background: #fee2e2; color: #b91c1c; padding: 1px 5px; border-radius: 3px; margin-left: 3px; }
+    .badge-tie  { font-size: .65rem; background: #f3f4f6; color: #6b7280; padding: 1px 5px; border-radius: 3px; margin-left: 3px; }
+
+    .badge       { font-size: .7rem; padding: 2px 8px; border-radius: 99px; font-weight: 600; }
+    .badge-green { background: #dcfce7; color: #15803d; }
+    .badge-red   { background: #fee2e2; color: #b91c1c; }
+    .badge-gray  { background: #f3f4f6; color: #6b7280; }
+
+    .hist-header { text-align: center; }
+    .hist-cell   { text-align: center; color: #64748b; font-size: .75rem; min-width: 52px; }
+    .hist-top10  { color: #16a34a; font-weight: 700; }
+    .hist-top30  { color: #2563eb; font-weight: 600; }
+    .hist-none   { color: #e2e8f0; }
+
+    @media (max-width: 900px) {
+      .stats { grid-template-columns: repeat(3, 1fr); }
+      .container { padding: 16px; }
+      .tab-bar { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div>
+    <h1>Chrome Extension Keyword Tracker</h1>
+    <p>1 extension(s) tracked · Chrome Web Store</p>
+  </div>
+  <div class="updated">Last updated<br>2026-04-06 10:04 UTC</div>
+</header>
+
+<nav class="tab-bar">
+  <button class="tab active" onclick="showTab(0, this)">Accessibility Checker by WebToffee</button>
+</nav>
+
+<div class="container">
+  
+        <div id="tab-0" class="tab-content active">
+
+          <div style="margin-bottom:12px">
+            <a href="https://chromewebstore.google.com/detail/nidjdackonjofdcclfbdcapbkgghcdjf" target="_blank" rel="noopener" style="font-size:13px;color:#2563eb;text-decoration:none">&#127760; View on Chrome Web Store &rarr;</a>
+          </div>
+
+          <!-- Stats -->
+          <div class="stats">
+            <div class="card c-blue">
+              <div class="value">486+</div>
+              <div class="label">Users</div>
+              <div style="margin-top:4px;min-height:16px"></div>
+            </div>
+            <div class="card">
+              <div class="value">5/8</div>
+              <div class="label">Ranking</div>
+              <div style="margin-top:4px;min-height:16px"><span style="color:#16a34a;font-size:.75rem">▲ +5 vs last week</span></div>
+            </div>
+            <div class="card c-green">
+              <div class="value">5</div>
+              <div class="label">In Top 10</div>
+              <div style="margin-top:4px;min-height:16px"><span style="color:#16a34a;font-size:.75rem">▲ +5 vs last week</span></div>
+            </div>
+            <div class="card">
+              <div class="value">5</div>
+              <div class="label">In Top 30</div>
+              <div style="margin-top:4px;min-height:16px"><span style="color:#16a34a;font-size:.75rem">▲ +5 vs last week</span></div>
+            </div>
+            <div class="card c-green">
+              <div class="value">0</div>
+              <div class="label">Beating Competitors</div>
+            </div>
+            <div class="card c-red">
+              <div class="value">4</div>
+              <div class="label">Behind Competitors</div>
+            </div>
+          </div>
+
+          <!-- Competitor Comparison -->
+          <div class="section-title">Competitor Comparison</div>
+          <div class="table-wrap" style="margin-bottom:28px">
+            <div class="table-title">
+              <span>Head-to-head position and user counts per keyword</span>
+              <div class="legend">
+                <span><span class="legend-dot" style="background:#16a34a"></span>Winning</span>
+                <span><span class="legend-dot" style="background:#dc2626"></span>Behind</span>
+              </div>
+            </div>
+            <table>
+              <thead><tr>
+                <th>Keyword</th><th>Your Position</th><th>Siteimprove</th><th>IBM Equal Access</th><th>WAVE</th><th>Status</th>
+              </tr></thead>
+              <tbody><tr style="background:#f0f9ff"><td class="kw-cell" style="font-weight:700">Users</td><td class="pos-cell"><span class="inst-val">486+</span><br></td><td class="comp-cell comp-lose" style="font-weight:600">60K+</td><td class="comp-cell comp-lose" style="font-weight:600">30K+</td><td class="comp-cell comp-lose" style="font-weight:600">700K+</td><td></td></tr><tr><td class="kw-cell">accessibility checker</td><td class="pos-cell"><span class="pos-num">#6</span></td><td class="comp-cell comp-lose">#1 <span class="badge-lose">▼5</span></td><td class="comp-cell comp-lose">#2 <span class="badge-lose">▼4</span></td><td class="comp-cell comp-win">#7 <span class="badge-win">▲1</span></td><td><span class="badge badge-green">Winning</span></td></tr><tr><td class="kw-cell">accessibility audit</td><td class="pos-cell"><span class="pos-num">#7</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-gray">Neutral</span></td></tr><tr><td class="kw-cell">wcag checker</td><td class="pos-cell"><span class="pos-num">#9</span></td><td class="comp-cell comp-lose">#5 <span class="badge-lose">▼4</span></td><td class="comp-cell comp-lose">#3 <span class="badge-lose">▼6</span></td><td class="comp-cell comp-lose">#4 <span class="badge-lose">▼5</span></td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">ada compliance</td><td class="pos-cell"><span class="pos-num">#9</span></td><td class="comp-cell comp-win">#10 <span class="badge-win">▲1</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-lose">#1 <span class="badge-lose">▼8</span></td><td><span class="badge badge-green">Winning</span></td></tr><tr><td class="kw-cell">accessibility testing</td><td class="pos-cell"><span class="pos-num">#10</span></td><td class="comp-cell comp-lose">#4 <span class="badge-lose">▼6</span></td><td class="comp-cell comp-lose">#3 <span class="badge-lose">▼7</span></td><td class="comp-cell comp-lose">#2 <span class="badge-lose">▼8</span></td><td><span class="badge badge-red">Behind</span></td></tr></tbody>
+            </table>
+          </div>
+
+          <!-- Full keyword history -->
+          <div class="section-title">All Keywords — Position History</div>
+          <div class="table-wrap">
+            <div class="table-title">
+              <span>Daily positions · sorted by current rank</span>
+              <div class="legend">
+                <span><span class="legend-dot" style="background:#16a34a"></span>Improved</span>
+                <span><span class="legend-dot" style="background:#dc2626"></span>Declined</span>
+                <span><span class="legend-dot" style="background:#7c3aed"></span>New</span>
+              </div>
+            </div>
+            <table>
+              <thead><tr>
+                <th>Keyword</th><th>Your Position</th><th>Siteimprove</th><th>IBM Equal Access</th><th>WAVE</th>
+                <th>Change vs Yesterday</th><th>vs Last Week</th><th class="hist-header">04-06</th>
+              </tr></thead>
+              <tbody>
+            <tr class="row-new">
+              <td class="kw-cell">accessibility checker</td>
+              <td class="pos-cell"><span class="pos-num">#6</span></td>
+              <td class="comp-cell comp-lose">#1 <span class="badge-lose">▼5</span></td><td class="comp-cell comp-lose">#2 <span class="badge-lose">▼4</span></td><td class="comp-cell comp-win">#7 <span class="badge-win">▲1</span></td>
+              <td class="trend-cell"><span class="trend-new">New</span></td>
+              <td class="trend-cell"><span class="trend-none">—</span></td>
+              <td class="hist-cell hist-top10">#6</td>
+            </tr>
+            <tr class="row-new">
+              <td class="kw-cell">accessibility audit</td>
+              <td class="pos-cell"><span class="pos-num">#7</span></td>
+              <td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td>
+              <td class="trend-cell"><span class="trend-new">New</span></td>
+              <td class="trend-cell"><span class="trend-none">—</span></td>
+              <td class="hist-cell hist-top10">#7</td>
+            </tr>
+            <tr class="row-new">
+              <td class="kw-cell">wcag checker</td>
+              <td class="pos-cell"><span class="pos-num">#9</span></td>
+              <td class="comp-cell comp-lose">#5 <span class="badge-lose">▼4</span></td><td class="comp-cell comp-lose">#3 <span class="badge-lose">▼6</span></td><td class="comp-cell comp-lose">#4 <span class="badge-lose">▼5</span></td>
+              <td class="trend-cell"><span class="trend-new">New</span></td>
+              <td class="trend-cell"><span class="trend-none">—</span></td>
+              <td class="hist-cell hist-top10">#9</td>
+            </tr>
+            <tr class="row-new">
+              <td class="kw-cell">ada compliance</td>
+              <td class="pos-cell"><span class="pos-num">#9</span></td>
+              <td class="comp-cell comp-win">#10 <span class="badge-win">▲1</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-lose">#1 <span class="badge-lose">▼8</span></td>
+              <td class="trend-cell"><span class="trend-new">New</span></td>
+              <td class="trend-cell"><span class="trend-none">—</span></td>
+              <td class="hist-cell hist-top10">#9</td>
+            </tr>
+            <tr class="row-new">
+              <td class="kw-cell">accessibility testing</td>
+              <td class="pos-cell"><span class="pos-num">#10</span></td>
+              <td class="comp-cell comp-lose">#4 <span class="badge-lose">▼6</span></td><td class="comp-cell comp-lose">#3 <span class="badge-lose">▼7</span></td><td class="comp-cell comp-lose">#2 <span class="badge-lose">▼8</span></td>
+              <td class="trend-cell"><span class="trend-new">New</span></td>
+              <td class="trend-cell"><span class="trend-none">—</span></td>
+              <td class="hist-cell hist-top10">#10</td>
+            </tr>
+            <tr class="row-none">
+              <td class="kw-cell">web accessibility</td>
+              <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
+              <td class="comp-cell">#8</td><td class="comp-cell">#7</td><td class="comp-cell">#3</td>
+              <td class="trend-cell"><span class="trend-none">—</span></td>
+              <td class="trend-cell"><span class="trend-none">—</span></td>
+              <td class="hist-cell hist-none">—</td>
+            </tr>
+            <tr class="row-none">
+              <td class="kw-cell">color contrast checker</td>
+              <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
+              <td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td>
+              <td class="trend-cell"><span class="trend-none">—</span></td>
+              <td class="trend-cell"><span class="trend-none">—</span></td>
+              <td class="hist-cell hist-none">—</td>
+            </tr>
+            <tr class="row-none">
+              <td class="kw-cell">aria checker</td>
+              <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
+              <td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell">#1</td>
+              <td class="trend-cell"><span class="trend-none">—</span></td>
+              <td class="trend-cell"><span class="trend-none">—</span></td>
+              <td class="hist-cell hist-none">—</td>
+            </tr></tbody>
+            </table>
+          </div>
+
+        </div>
+</div>
+
+<script>
+function showTab(idx, btn) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + idx).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
