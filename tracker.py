@@ -337,15 +337,20 @@ def generate_dashboard(data, config):
         for kw in sorted_kws:
             our = our_kws.get(kw)
             if not isinstance(our, int):
-                continue
+                our_cell_comp = '<span class="pos-none">—</span>'
+            else:
+                our_cell_comp = f'<span class="pos-num">#{our}</span>'
             row_parts = f'<td class="kw-cell">{kw}</td>'
-            row_parts += f'<td class="pos-cell"><span class="pos-num">#{our}</span></td>'
+            row_parts += f'<td class="pos-cell">{our_cell_comp}</td>'
             overall = "neutral"
             for comp in competitors:
                 c_kws = keyword_positions(data[today].get(comp["id"], {})) if today else {}
                 c_pos = c_kws.get(kw)
                 if not isinstance(c_pos, int):
                     row_parts += '<td class="comp-cell comp-none">—</td>'
+                elif not isinstance(our, int):
+                    row_parts += f'<td class="comp-cell comp-lose">#{c_pos}</td>'
+                    overall = "lose"
                 elif our < c_pos:
                     row_parts += f'<td class="comp-cell comp-win">#{c_pos} <span class="badge-win">▲{c_pos-our}</span></td>'
                     overall = "win"
