@@ -379,7 +379,7 @@ def generate_dashboard(data, config):
             lw_pos = lw_kws.get(kw)
 
             if not isinstance(our, int):
-                our_cell   = '<span class="pos-none">Not in top 10</span>'
+                our_cell   = '<span class="pos-none">Not in top 50</span>'
                 row_class  = "row-none"
                 trend_html = '<span class="trend-none">—</span>'
             else:

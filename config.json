@@ -30,7 +30,7 @@
       ]
     }
   ],
-  "results_depth": 10,
+  "results_depth": 50,
   "request_delay_seconds": 2.0,
   "slack": {
     "enabled": true,
