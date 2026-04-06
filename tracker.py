@@ -780,8 +780,12 @@ def send_slack(data, all_changes, config):
     blocks.append({"type": "context", "elements": [{"type": "mrkdwn",
         "text": "View full dashboard → https://safwana-wy.github.io/chrome-extension-keyword-tracker/"}]})
 
+    payload = {"blocks": blocks}
+    if slack_cfg.get("channel"):
+        payload["channel"] = slack_cfg["channel"]
+
     try:
-        resp = requests.post(webhook_url, json={"blocks": blocks}, timeout=10)
+        resp = requests.post(webhook_url, json=payload, timeout=10)
         if resp.status_code == 200:
             print("Slack notification sent.")
         else:

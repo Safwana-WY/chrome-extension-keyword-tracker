@@ -25,6 +25,7 @@
   "slack": {
     "enabled": true,
     "webhook_url": "",
+    "channel": "#chrome-extension-keyword-tracking",
     "mention_on_decline": "@channel"
   },
   "email": {
