@@ -99,12 +99,19 @@
     .hist-top30  { color: #2563eb; font-weight: 600; }
     .hist-none   { color: #e2e8f0; }
 
+    /* ── Charts ── */
+    .chart-card  { background: #fff; border-radius: 10px; padding: 18px 20px;
+                    box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+    .chart-title { font-size: .8rem; font-weight: 600; color: #475569; margin-bottom: 12px; }
+    .chart-empty { font-size: .78rem; color: #94a3b8; padding: 32px 0; text-align: center; }
+
     @media (max-width: 900px) {
       .stats { grid-template-columns: repeat(3, 1fr); }
       .container { padding: 16px; }
       .tab-bar { padding: 0 16px; }
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -113,7 +120,7 @@
     <h1>Chrome Extension Keyword Tracker</h1>
     <p>1 extension(s) tracked · Chrome Web Store</p>
   </div>
-  <div class="updated">Last updated<br>2026-04-08 05:04 UTC</div>
+  <div class="updated">Last updated<br>2026-04-09 09:28 UTC</div>
 </header>
 
 <nav class="tab-bar">
@@ -131,9 +138,9 @@
           <!-- Stats -->
           <div class="stats">
             <div class="card c-blue">
-              <div class="value">502+</div>
+              <div class="value">510+</div>
               <div class="label">Users</div>
-              <div style="margin-top:4px;min-height:16px"><span style="color:#16a34a;font-size:.75rem">▲ +16+</span></div>
+              <div style="margin-top:4px;min-height:16px"><span style="color:#16a34a;font-size:.75rem">▲ +8+</span></div>
             </div>
             <div class="card">
               <div class="value">9/17</div>
@@ -155,10 +162,75 @@
               <div class="label">Beating Competitors</div>
             </div>
             <div class="card c-red">
-              <div class="value">6</div>
+              <div class="value">7</div>
               <div class="label">Behind Competitors</div>
             </div>
           </div>
+          
+          <div class="section-title">Trends</div>
+          <div style="display:grid;grid-template-columns:1fr 2fr;gap:20px;margin-bottom:28px">
+            <div class="chart-card">
+              <div class="chart-title">User Growth</div>
+              
+              <canvas id="chart-users-0" ></canvas>
+            </div>
+            <div class="chart-card">
+              <div class="chart-title">Keyword Position Trends <span style="font-size:.7rem;font-weight:400;color:#94a3b8">(lower = better)</span></div>
+              
+              <canvas id="chart-kw-0" ></canvas>
+            </div>
+          </div>
+          <script>
+          (function() {
+            var usersSeries = [{"x": "2026-04-06", "y": 486}, {"x": "2026-04-08", "y": 502}, {"x": "2026-04-09", "y": 510}];
+            var kwSeries    = [{"label": "accessibility testing for developers", "color": "#2563eb", "data": [{"x": "2026-04-08", "y": 4}, {"x": "2026-04-09", "y": 4}]}, {"label": "website accessibility test", "color": "#16a34a", "data": [{"x": "2026-04-08", "y": 5}, {"x": "2026-04-09", "y": 5}]}, {"label": "accessibility checker", "color": "#dc2626", "data": [{"x": "2026-04-06", "y": 6}, {"x": "2026-04-08", "y": 6}, {"x": "2026-04-09", "y": 6}]}, {"label": "ADA compliance checker", "color": "#d97706", "data": [{"x": "2026-04-08", "y": 7}, {"x": "2026-04-09", "y": 6}]}, {"label": "accessibility audit", "color": "#7c3aed", "data": [{"x": "2026-04-06", "y": 7}, {"x": "2026-04-08", "y": 7}, {"x": "2026-04-09", "y": 7}]}, {"label": "wcag checker", "color": "#0891b2", "data": [{"x": "2026-04-06", "y": 9}, {"x": "2026-04-08", "y": 9}, {"x": "2026-04-09", "y": 9}]}, {"label": "ada compliance", "color": "#db2777", "data": [{"x": "2026-04-06", "y": 9}, {"x": "2026-04-08", "y": 9}, {"x": "2026-04-09", "y": 9}]}, {"label": "accessibility testing", "color": "#65a30d", "data": [{"x": "2026-04-06", "y": 10}, {"x": "2026-04-08", "y": 10}, {"x": "2026-04-09", "y": 10}]}, {"label": "web accessibility testing", "color": "#ea580c", "data": [{"x": "2026-04-09", "y": 10}]}, {"label": "EAA compliance tool", "color": "#b45309", "data": [{"x": "2026-04-08", "y": 1}]}];
+            if (!false) {
+              new Chart(document.getElementById('chart-users-0'), {
+                type: 'line',
+                data: { datasets: [{
+                  label: 'Users', data: usersSeries,
+                  borderColor: '#0891b2', backgroundColor: 'rgba(8,145,178,0.08)',
+                  borderWidth: 2, pointRadius: usersSeries.length === 1 ? 6 : 3,
+                  tension: 0.3, fill: true,
+                }] },
+                options: {
+                  responsive: true,
+                  plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { label: ctx => ' ' + ctx.parsed.y.toLocaleString() + ' users' } }
+                  },
+                  scales: {
+                    x: { type: 'category', grid: { display: false } },
+                    y: { beginAtZero: false, ticks: { precision: 0 } }
+                  }
+                }
+              });
+            }
+            if (!false) {
+              new Chart(document.getElementById('chart-kw-0'), {
+                type: 'line',
+                data: { datasets: kwSeries.map(function(s) {
+                  return { label: s.label, data: s.data, borderColor: s.color,
+                           backgroundColor: 'transparent', borderWidth: 2,
+                           pointRadius: s.data.length === 1 ? 6 : 3,
+                           tension: 0.2, spanGaps: false };
+                }) },
+                options: {
+                  responsive: true,
+                  plugins: {
+                    legend: { display: true, position: 'right', labels: { boxWidth: 10, font: { size: 10 } } },
+                    tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': #' + ctx.parsed.y } }
+                  },
+                  scales: {
+                    x: { type: 'category', grid: { display: false } },
+                    y: { reverse: true, min: 1, ticks: { precision: 0, stepSize: 1 },
+                          title: { display: true, text: 'Rank', font: { size: 10 } } }
+                  }
+                }
+              });
+            }
+          })();
+          </script>
 
           <!-- Competitor Comparison -->
           <div class="section-title">Competitor Comparison</div>
@@ -174,7 +246,7 @@
               <thead><tr>
                 <th>Keyword</th><th>Your Position</th><th>Siteimprove</th><th>IBM Equal Access</th><th>WAVE</th><th>Silktide</th><th>Status</th>
               </tr></thead>
-              <tbody><tr style="background:#f0f9ff"><td class="kw-cell" style="font-weight:700">Users</td><td class="pos-cell"><span class="inst-val">502+</span><br><span style="color:#16a34a;font-size:.75rem">▲ +16+</span></td><td class="comp-cell comp-lose" style="font-weight:600">60K+</td><td class="comp-cell comp-lose" style="font-weight:600">30K+</td><td class="comp-cell comp-lose" style="font-weight:600">700K+</td><td class="comp-cell comp-lose" style="font-weight:600">50K+</td><td></td></tr><tr><td class="kw-cell">EAA compliance tool</td><td class="pos-cell"><span class="pos-num">#1</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-gray">Neutral</span></td></tr><tr><td class="kw-cell">accessibility testing for developers</td><td class="pos-cell"><span class="pos-num">#4</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-win">#5 <span class="badge-win">▲1</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-green">Winning</span></td></tr><tr><td class="kw-cell">website accessibility test</td><td class="pos-cell"><span class="pos-num">#5</span></td><td class="comp-cell comp-lose">#1 <span class="badge-lose">▼4</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-lose">#3 <span class="badge-lose">▼2</span></td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">accessibility checker</td><td class="pos-cell"><span class="pos-num">#6</span></td><td class="comp-cell comp-lose">#1 <span class="badge-lose">▼5</span></td><td class="comp-cell comp-lose">#2 <span class="badge-lose">▼4</span></td><td class="comp-cell comp-win">#7 <span class="badge-win">▲1</span></td><td class="comp-cell comp-lose">#5 <span class="badge-lose">▼1</span></td><td><span class="badge badge-green">Winning</span></td></tr><tr><td class="kw-cell">accessibility audit</td><td class="pos-cell"><span class="pos-num">#7</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-gray">Neutral</span></td></tr><tr><td class="kw-cell">ADA compliance checker</td><td class="pos-cell"><span class="pos-num">#7</span></td><td class="comp-cell comp-lose">#3 <span class="badge-lose">▼4</span></td><td class="comp-cell comp-lose">#6 <span class="badge-lose">▼1</span></td><td class="comp-cell comp-lose">#1 <span class="badge-lose">▼6</span></td><td class="comp-cell comp-win">#9 <span class="badge-win">▲2</span></td><td><span class="badge badge-green">Winning</span></td></tr><tr><td class="kw-cell">wcag checker</td><td class="pos-cell"><span class="pos-num">#9</span></td><td class="comp-cell comp-lose">#5 <span class="badge-lose">▼4</span></td><td class="comp-cell comp-lose">#3 <span class="badge-lose">▼6</span></td><td class="comp-cell comp-lose">#4 <span class="badge-lose">▼5</span></td><td class="comp-cell comp-win">#10 <span class="badge-win">▲1</span></td><td><span class="badge badge-green">Winning</span></td></tr><tr><td class="kw-cell">ada compliance</td><td class="pos-cell"><span class="pos-num">#9</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-lose">#1 <span class="badge-lose">▼8</span></td><td class="comp-cell comp-none">—</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">accessibility testing</td><td class="pos-cell"><span class="pos-num">#10</span></td><td class="comp-cell comp-lose">#4 <span class="badge-lose">▼6</span></td><td class="comp-cell comp-lose">#3 <span class="badge-lose">▼7</span></td><td class="comp-cell comp-lose">#2 <span class="badge-lose">▼8</span></td><td class="comp-cell comp-lose">#9 <span class="badge-lose">▼1</span></td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">web accessibility</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-lose">#8</td><td class="comp-cell comp-lose">#7</td><td class="comp-cell comp-lose">#3</td><td class="comp-cell comp-lose">#9</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">color contrast checker</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-gray">Neutral</span></td></tr><tr><td class="kw-cell">aria checker</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-lose">#1</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">WCAG compliance tool</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-lose">#1</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">accessibility</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-lose">#1</td><td class="comp-cell comp-lose">#3</td><td class="comp-cell comp-lose">#5</td><td class="comp-cell comp-lose">#4</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">accessibility audit tool</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-gray">Neutral</span></td></tr><tr><td class="kw-cell">free accessibility extension</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-lose">#4</td><td class="comp-cell comp-lose">#6</td><td class="comp-cell comp-lose">#1</td><td class="comp-cell comp-lose">#3</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">web accessibility testing</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-lose">#4</td><td class="comp-cell comp-lose">#5</td><td class="comp-cell comp-lose">#2</td><td class="comp-cell comp-lose">#7</td><td><span class="badge badge-red">Behind</span></td></tr></tbody>
+              <tbody><tr style="background:#f0f9ff"><td class="kw-cell" style="font-weight:700">Users</td><td class="pos-cell"><span class="inst-val">510+</span><br><span style="color:#16a34a;font-size:.75rem">▲ +8+</span></td><td class="comp-cell comp-lose" style="font-weight:600">60K+</td><td class="comp-cell comp-lose" style="font-weight:600">30K+</td><td class="comp-cell comp-lose" style="font-weight:600">700K+</td><td class="comp-cell comp-lose" style="font-weight:600">50K+</td><td></td></tr><tr><td class="kw-cell">accessibility testing for developers</td><td class="pos-cell"><span class="pos-num">#4</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-win">#5 <span class="badge-win">▲1</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-green">Winning</span></td></tr><tr><td class="kw-cell">website accessibility test</td><td class="pos-cell"><span class="pos-num">#5</span></td><td class="comp-cell comp-lose">#1 <span class="badge-lose">▼4</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-lose">#3 <span class="badge-lose">▼2</span></td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">accessibility checker</td><td class="pos-cell"><span class="pos-num">#6</span></td><td class="comp-cell comp-lose">#1 <span class="badge-lose">▼5</span></td><td class="comp-cell comp-lose">#2 <span class="badge-lose">▼4</span></td><td class="comp-cell comp-win">#7 <span class="badge-win">▲1</span></td><td class="comp-cell comp-lose">#5 <span class="badge-lose">▼1</span></td><td><span class="badge badge-green">Winning</span></td></tr><tr><td class="kw-cell">ADA compliance checker</td><td class="pos-cell"><span class="pos-num">#6</span></td><td class="comp-cell comp-lose">#3 <span class="badge-lose">▼3</span></td><td class="comp-cell comp-lose">#5 <span class="badge-lose">▼1</span></td><td class="comp-cell comp-lose">#1 <span class="badge-lose">▼5</span></td><td class="comp-cell comp-win">#9 <span class="badge-win">▲3</span></td><td><span class="badge badge-green">Winning</span></td></tr><tr><td class="kw-cell">accessibility audit</td><td class="pos-cell"><span class="pos-num">#7</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-gray">Neutral</span></td></tr><tr><td class="kw-cell">wcag checker</td><td class="pos-cell"><span class="pos-num">#9</span></td><td class="comp-cell comp-lose">#5 <span class="badge-lose">▼4</span></td><td class="comp-cell comp-lose">#3 <span class="badge-lose">▼6</span></td><td class="comp-cell comp-lose">#4 <span class="badge-lose">▼5</span></td><td class="comp-cell comp-win">#10 <span class="badge-win">▲1</span></td><td><span class="badge badge-green">Winning</span></td></tr><tr><td class="kw-cell">ada compliance</td><td class="pos-cell"><span class="pos-num">#9</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-lose">#1 <span class="badge-lose">▼8</span></td><td class="comp-cell comp-none">—</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">accessibility testing</td><td class="pos-cell"><span class="pos-num">#10</span></td><td class="comp-cell comp-lose">#4 <span class="badge-lose">▼6</span></td><td class="comp-cell comp-lose">#3 <span class="badge-lose">▼7</span></td><td class="comp-cell comp-lose">#2 <span class="badge-lose">▼8</span></td><td class="comp-cell comp-lose">#9 <span class="badge-lose">▼1</span></td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">web accessibility testing</td><td class="pos-cell"><span class="pos-num">#10</span></td><td class="comp-cell comp-lose">#4 <span class="badge-lose">▼6</span></td><td class="comp-cell comp-lose">#5 <span class="badge-lose">▼5</span></td><td class="comp-cell comp-lose">#2 <span class="badge-lose">▼8</span></td><td class="comp-cell comp-none">—</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">web accessibility</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-lose">#8</td><td class="comp-cell comp-lose">#7</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-lose">#9</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">color contrast checker</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-gray">Neutral</span></td></tr><tr><td class="kw-cell">aria checker</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-lose">#1</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">EAA compliance tool</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-gray">Neutral</span></td></tr><tr><td class="kw-cell">WCAG compliance tool</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-lose">#1</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">accessibility</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-lose">#1</td><td class="comp-cell comp-lose">#3</td><td class="comp-cell comp-lose">#5</td><td class="comp-cell comp-lose">#4</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">accessibility audit tool</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-gray">Neutral</span></td></tr><tr><td class="kw-cell">free accessibility extension</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-lose">#4</td><td class="comp-cell comp-lose">#6</td><td class="comp-cell comp-lose">#1</td><td class="comp-cell comp-lose">#3</td><td><span class="badge badge-red">Behind</span></td></tr></tbody>
             </table>
           </div>
 
@@ -192,32 +264,24 @@
             <table>
               <thead><tr>
                 <th>Keyword</th><th>Your Position</th><th>Siteimprove</th><th>IBM Equal Access</th><th>WAVE</th><th>Silktide</th>
-                <th>Change vs Yesterday</th><th>vs Last Week</th><th class="hist-header">04-06</th><th class="hist-header">04-08</th>
+                <th>Change vs Yesterday</th><th>vs Last Week</th><th class="hist-header">04-06</th><th class="hist-header">04-08</th><th class="hist-header">04-09</th>
               </tr></thead>
               <tbody>
-            <tr class="row-new">
-              <td class="kw-cell">EAA compliance tool</td>
-              <td class="pos-cell"><span class="pos-num">#1</span></td>
-              <td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td>
-              <td class="trend-cell"><span class="trend-new">New</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-top10">#1</td>
-            </tr>
-            <tr class="row-new">
+            <tr class="row-stable">
               <td class="kw-cell">accessibility testing for developers</td>
               <td class="pos-cell"><span class="pos-num">#4</span></td>
               <td class="comp-cell comp-none">—</td><td class="comp-cell comp-win">#5 <span class="badge-win">▲1</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td>
-              <td class="trend-cell"><span class="trend-new">New</span></td>
+              <td class="trend-cell"><span class="trend-stable">→</span></td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-top10">#4</td>
+              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-top10">#4</td><td class="hist-cell hist-top10">#4</td>
             </tr>
-            <tr class="row-new">
+            <tr class="row-stable">
               <td class="kw-cell">website accessibility test</td>
               <td class="pos-cell"><span class="pos-num">#5</span></td>
               <td class="comp-cell comp-lose">#1 <span class="badge-lose">▼4</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-lose">#3 <span class="badge-lose">▼2</span></td>
-              <td class="trend-cell"><span class="trend-new">New</span></td>
+              <td class="trend-cell"><span class="trend-stable">→</span></td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-top10">#5</td>
+              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-top10">#5</td><td class="hist-cell hist-top10">#5</td>
             </tr>
             <tr class="row-stable">
               <td class="kw-cell">accessibility checker</td>
@@ -225,7 +289,15 @@
               <td class="comp-cell comp-lose">#1 <span class="badge-lose">▼5</span></td><td class="comp-cell comp-lose">#2 <span class="badge-lose">▼4</span></td><td class="comp-cell comp-win">#7 <span class="badge-win">▲1</span></td><td class="comp-cell comp-lose">#5 <span class="badge-lose">▼1</span></td>
               <td class="trend-cell"><span class="trend-stable">→</span></td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="hist-cell hist-top10">#6</td><td class="hist-cell hist-top10">#6</td>
+              <td class="hist-cell hist-top10">#6</td><td class="hist-cell hist-top10">#6</td><td class="hist-cell hist-top10">#6</td>
+            </tr>
+            <tr class="row-up">
+              <td class="kw-cell">ADA compliance checker</td>
+              <td class="pos-cell"><span class="pos-num">#6</span></td>
+              <td class="comp-cell comp-lose">#3 <span class="badge-lose">▼3</span></td><td class="comp-cell comp-lose">#5 <span class="badge-lose">▼1</span></td><td class="comp-cell comp-lose">#1 <span class="badge-lose">▼5</span></td><td class="comp-cell comp-win">#9 <span class="badge-win">▲3</span></td>
+              <td class="trend-cell"><span class="trend-up">↑ +1 <small>(was #7)</small></span></td>
+              <td class="trend-cell"><span class="trend-none">—</span></td>
+              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-top10">#7</td><td class="hist-cell hist-top10">#6</td>
             </tr>
             <tr class="row-stable">
               <td class="kw-cell">accessibility audit</td>
@@ -233,15 +305,7 @@
               <td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td>
               <td class="trend-cell"><span class="trend-stable">→</span></td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="hist-cell hist-top10">#7</td><td class="hist-cell hist-top10">#7</td>
-            </tr>
-            <tr class="row-new">
-              <td class="kw-cell">ADA compliance checker</td>
-              <td class="pos-cell"><span class="pos-num">#7</span></td>
-              <td class="comp-cell comp-lose">#3 <span class="badge-lose">▼4</span></td><td class="comp-cell comp-lose">#6 <span class="badge-lose">▼1</span></td><td class="comp-cell comp-lose">#1 <span class="badge-lose">▼6</span></td><td class="comp-cell comp-win">#9 <span class="badge-win">▲2</span></td>
-              <td class="trend-cell"><span class="trend-new">New</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-top10">#7</td>
+              <td class="hist-cell hist-top10">#7</td><td class="hist-cell hist-top10">#7</td><td class="hist-cell hist-top10">#7</td>
             </tr>
             <tr class="row-stable">
               <td class="kw-cell">wcag checker</td>
@@ -249,7 +313,7 @@
               <td class="comp-cell comp-lose">#5 <span class="badge-lose">▼4</span></td><td class="comp-cell comp-lose">#3 <span class="badge-lose">▼6</span></td><td class="comp-cell comp-lose">#4 <span class="badge-lose">▼5</span></td><td class="comp-cell comp-win">#10 <span class="badge-win">▲1</span></td>
               <td class="trend-cell"><span class="trend-stable">→</span></td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-top10">#9</td>
+              <td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-top10">#9</td>
             </tr>
             <tr class="row-stable">
               <td class="kw-cell">ada compliance</td>
@@ -257,7 +321,7 @@
               <td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-lose">#1 <span class="badge-lose">▼8</span></td><td class="comp-cell comp-none">—</td>
               <td class="trend-cell"><span class="trend-stable">→</span></td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-top10">#9</td>
+              <td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-top10">#9</td>
             </tr>
             <tr class="row-stable">
               <td class="kw-cell">accessibility testing</td>
@@ -265,15 +329,23 @@
               <td class="comp-cell comp-lose">#4 <span class="badge-lose">▼6</span></td><td class="comp-cell comp-lose">#3 <span class="badge-lose">▼7</span></td><td class="comp-cell comp-lose">#2 <span class="badge-lose">▼8</span></td><td class="comp-cell comp-lose">#9 <span class="badge-lose">▼1</span></td>
               <td class="trend-cell"><span class="trend-stable">→</span></td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="hist-cell hist-top10">#10</td><td class="hist-cell hist-top10">#10</td>
+              <td class="hist-cell hist-top10">#10</td><td class="hist-cell hist-top10">#10</td><td class="hist-cell hist-top10">#10</td>
+            </tr>
+            <tr class="row-new">
+              <td class="kw-cell">web accessibility testing</td>
+              <td class="pos-cell"><span class="pos-num">#10</span></td>
+              <td class="comp-cell comp-lose">#4 <span class="badge-lose">▼6</span></td><td class="comp-cell comp-lose">#5 <span class="badge-lose">▼5</span></td><td class="comp-cell comp-lose">#2 <span class="badge-lose">▼8</span></td><td class="comp-cell comp-none">—</td>
+              <td class="trend-cell"><span class="trend-new">New</span></td>
+              <td class="trend-cell"><span class="trend-none">—</span></td>
+              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-top10">#10</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">web accessibility</td>
               <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell">#8</td><td class="comp-cell">#7</td><td class="comp-cell">#3</td><td class="comp-cell">#9</td>
+              <td class="comp-cell">#8</td><td class="comp-cell">#7</td><td class="comp-cell comp-none">—</td><td class="comp-cell">#9</td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
+              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">color contrast checker</td>
@@ -281,7 +353,7 @@
               <td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
+              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">aria checker</td>
@@ -289,7 +361,15 @@
               <td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell">#1</td><td class="comp-cell comp-none">—</td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
+              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
+            </tr>
+            <tr class="row-none">
+              <td class="kw-cell">EAA compliance tool</td>
+              <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
+              <td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td>
+              <td class="trend-cell"><span class="trend-none">—</span></td>
+              <td class="trend-cell"><span class="trend-none">—</span></td>
+              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-top10">#1</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">WCAG compliance tool</td>
@@ -297,7 +377,7 @@
               <td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell">#1</td><td class="comp-cell comp-none">—</td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
+              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">accessibility</td>
@@ -305,7 +385,7 @@
               <td class="comp-cell">#1</td><td class="comp-cell">#3</td><td class="comp-cell">#5</td><td class="comp-cell">#4</td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
+              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">accessibility audit tool</td>
@@ -313,7 +393,7 @@
               <td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
+              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">free accessibility extension</td>
@@ -321,15 +401,7 @@
               <td class="comp-cell">#4</td><td class="comp-cell">#6</td><td class="comp-cell">#1</td><td class="comp-cell">#3</td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
-            </tr>
-            <tr class="row-none">
-              <td class="kw-cell">web accessibility testing</td>
-              <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell">#4</td><td class="comp-cell">#5</td><td class="comp-cell">#2</td><td class="comp-cell">#7</td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
+              <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
             </tr></tbody>
             </table>
           </div>
