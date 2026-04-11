@@ -242,6 +242,13 @@ def run_check(config):
 # DASHBOARD GENERATOR
 # ---------------------------------------------------------------------------
 
+CHART_COLORS = [
+    "#2563eb", "#16a34a", "#dc2626", "#d97706", "#7c3aed",
+    "#0891b2", "#db2777", "#65a30d", "#ea580c", "#0284c7",
+    "#9333ea", "#059669", "#b45309", "#e11d48", "#0d9488",
+    "#6366f1", "#84cc16",
+]
+
 def generate_dashboard(data, config):
     extensions = config["extensions"]
     dates      = sorted(data.keys())
@@ -249,8 +256,9 @@ def generate_dashboard(data, config):
     yesterday  = dates[-2] if len(dates) >= 2 else None
     last_week_date = find_last_week_date(dates, today) if today else None
 
-    tabs_html    = ""
-    content_html = ""
+    tabs_html      = ""
+    content_html   = ""
+    all_chart_data = {}
 
     for e_idx, ext_cfg in enumerate(extensions):
         ext_id      = ext_cfg["id"]
@@ -318,6 +326,64 @@ def generate_dashboard(data, config):
             pos = our_kws.get(kw)
             return (0, pos) if isinstance(pos, int) else (1, 9999)
         sorted_kws = sorted(keywords, key=sort_key)
+
+        # ── Chart data ─────────────────────────────────────────────────────
+        all_chart_data[ext_id] = {
+            "dates":    dates,
+            "our_name": ext_name,
+            "users":    [data[d].get(ext_id, {}).get("_users") for d in dates],
+            "keywords": {
+                kw: [keyword_positions(data[d].get(ext_id, {})).get(kw) for d in dates]
+                for kw in keywords
+            },
+            "competitors": {
+                comp["id"]: {
+                    "name": comp["name"],
+                    "keywords": {
+                        kw: [keyword_positions(data[d].get(comp["id"], {})).get(kw) for d in dates]
+                        for kw in keywords
+                    },
+                }
+                for comp in competitors
+            },
+        }
+
+        comp_kw_options = "\n".join(
+            f'<option value="{kw}">{kw}</option>' for kw in sorted_kws
+        )
+        charts_html = f"""
+          <div class="section-title">Trends</div>
+          <div class="chart-wrap">
+            <div class="chart-toolbar">
+              <div class="chart-filter" id="cws-filter-{e_idx}">
+                <button class="filter-btn active" onclick="cwsSetFilter({e_idx},'daily',this)">Daily</button>
+                <button class="filter-btn" onclick="cwsSetFilter({e_idx},'weekly',this)">Weekly</button>
+                <button class="filter-btn" onclick="cwsSetFilter({e_idx},'monthly',this)">Monthly</button>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 2fr;gap:20px;margin-bottom:20px">
+              <div class="chart-card">
+                <div class="chart-title">User Growth</div>
+                <div class="chart-empty" id="cws-u-empty-{e_idx}" style="display:none">Not enough data yet</div>
+                <canvas id="chart-users-{e_idx}"></canvas>
+              </div>
+              <div class="chart-card">
+                <div class="chart-title">Keyword Position Trends <span style="font-size:.7rem;font-weight:400;color:#94a3b8">(lower = better)</span></div>
+                <div class="chart-empty" id="cws-k-empty-{e_idx}" style="display:none">Not enough data yet</div>
+                <canvas id="chart-kw-{e_idx}"></canvas>
+              </div>
+            </div>
+            <div class="chart-card">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+                <div class="chart-title" style="margin:0">Competitor Comparison</div>
+                <select class="kw-select" id="cws-comp-kw-{e_idx}" onchange="cwsUpdateComp({e_idx})">
+                  {comp_kw_options}
+                </select>
+              </div>
+              <div class="chart-empty" id="cws-c-empty-{e_idx}" style="display:none">Not enough data yet</div>
+              <canvas id="chart-comp-{e_idx}"></canvas>
+            </div>
+          </div>"""
 
         # ── Users comparison row ───────────────────────────────────────────
         users_comp_cells = f'<td class="kw-cell" style="font-weight:700">Users</td>'
@@ -480,6 +546,7 @@ def generate_dashboard(data, config):
               <div class="label">Behind Competitors</div>
             </div>
           </div>
+          {charts_html}
 
           <!-- Competitor Comparison -->
           <div class="section-title">Competitor Comparison</div>
@@ -521,8 +588,9 @@ def generate_dashboard(data, config):
 
         </div>"""
 
-    last_updated = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
-    ext_count    = len(extensions)
+    last_updated       = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+    ext_count          = len(extensions)
+    cws_chart_data_json = json.dumps(all_chart_data)
 
     html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -625,12 +693,26 @@ def generate_dashboard(data, config):
     .hist-top30  {{ color: #2563eb; font-weight: 600; }}
     .hist-none   {{ color: #e2e8f0; }}
 
+    /* ── Charts ── */
+    .chart-wrap  {{ background: #fff; border-radius: 10px; padding: 20px 24px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }}
+    .chart-card  {{ background: #f8fafc; border-radius: 8px; padding: 16px 18px; }}
+    .chart-title {{ font-size: .8rem; font-weight: 600; color: #475569; margin-bottom: 12px; }}
+    .chart-empty {{ font-size: .78rem; color: #94a3b8; padding: 32px 0; text-align: center; }}
+    .chart-toolbar {{ display: flex; justify-content: flex-end; margin-bottom: 16px; }}
+    .chart-filter {{ display: flex; gap: 4px; background: #f1f5f9; border-radius: 8px; padding: 4px; }}
+    .filter-btn {{ background: transparent; border: none; padding: 5px 14px; font-size: .78rem; font-weight: 500; color: #64748b; border-radius: 5px; cursor: pointer; transition: all .15s; }}
+    .filter-btn:hover {{ color: #1e293b; }}
+    .filter-btn.active {{ background: #fff; color: #2563eb; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,.1); }}
+    .kw-select {{ border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px 8px; font-size: .78rem; color: #475569; background: #fff; cursor: pointer; outline: none; }}
+    .kw-select:focus {{ border-color: #2563eb; }}
+
     @media (max-width: 900px) {{
       .stats {{ grid-template-columns: repeat(3, 1fr); }}
       .container {{ padding: 16px; }}
       .tab-bar {{ padding: 0 16px; }}
     }}
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -650,13 +732,177 @@ def generate_dashboard(data, config):
   {content_html}
 </div>
 
+<script type="application/json" id="cws-chart-data">{cws_chart_data_json}</script>
 <script>
+const CWS_DATA    = JSON.parse(document.getElementById('cws-chart-data').textContent);
+const CWS_COLORS  = ['#2563eb','#dc2626','#16a34a','#d97706','#7c3aed','#0891b2','#db2777','#65a30d','#ea580c','#0284c7'];
+const cwsFilters  = {{}};
+const cwsCharts   = {{}};
+
+function cwsISOWeek(ds) {{
+  const d = new Date(ds + 'T00:00:00Z'), day = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - day);
+  const ys = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return d.getUTCFullYear() + '-W' + String(Math.ceil(((d - ys) / 86400000 + 1) / 7)).padStart(2, '0');
+}}
+
+function cwsFilterDates(dates, mode) {{
+  if (!dates || !dates.length) return [];
+  if (mode === 'daily') return dates;
+  const last = {{}};
+  for (const d of dates) {{ const k = mode === 'weekly' ? cwsISOWeek(d) : d.substring(0,7); last[k] = d; }}
+  return Object.values(last).sort();
+}}
+
+function cwsExtId(idx) {{ return Object.keys(CWS_DATA)[idx]; }}
+
+function cwsDestroyChart(key) {{
+  if (cwsCharts[key]) {{ cwsCharts[key].destroy(); delete cwsCharts[key]; }}
+}}
+
+function cwsMakeCharts(eIdx) {{
+  const extId = cwsExtId(eIdx);
+  const d     = CWS_DATA[extId];
+  const mode  = cwsFilters[eIdx] || 'daily';
+  const fd    = cwsFilterDates(d.dates, mode);
+  const dIdx  = {{}};
+  d.dates.forEach((dt, i) => dIdx[dt] = i);
+
+  const getVals = (arr) => fd.map(dt => arr[dIdx[dt]] != null ? arr[dIdx[dt]] : null);
+
+  // ── Users ──
+  cwsDestroyChart(eIdx + '-users');
+  const usersVals = fd.map(dt => d.users[dIdx[dt]]).filter(v => v != null);
+  const uEmpty = document.getElementById('cws-u-empty-' + eIdx);
+  const uCanvas = document.getElementById('chart-users-' + eIdx);
+  if (usersVals.length < 2) {{
+    if (uEmpty) uEmpty.style.display = '';
+    if (uCanvas) uCanvas.style.display = 'none';
+  }} else {{
+    if (uEmpty) uEmpty.style.display = 'none';
+    if (uCanvas) uCanvas.style.display = '';
+    cwsCharts[eIdx + '-users'] = new Chart(uCanvas, {{
+      type: 'line',
+      data: {{ datasets: [{{ label: 'Users',
+        data: fd.map(dt => ({{ x: dt, y: d.users[dIdx[dt]] }})).filter(p => p.y != null),
+        borderColor: '#0891b2', backgroundColor: 'rgba(8,145,178,0.08)',
+        borderWidth: 2, pointRadius: 3, tension: 0.3, fill: true }}] }},
+      options: {{ responsive: true,
+        plugins: {{ legend: {{ display: false }},
+          tooltip: {{ callbacks: {{ label: ctx => ' ' + ctx.parsed.y.toLocaleString() + ' users' }} }} }},
+        scales: {{ x: {{ type: 'category', grid: {{ display: false }} }},
+                   y: {{ beginAtZero: false, ticks: {{ precision: 0 }} }} }} }}
+    }});
+  }}
+
+  // ── Keyword positions ──
+  cwsDestroyChart(eIdx + '-kw');
+  const kwKeys = Object.keys(d.keywords).sort((a, b) => {{
+    const av = [...d.keywords[a]].reverse().find(v => v != null) || 9999;
+    const bv = [...d.keywords[b]].reverse().find(v => v != null) || 9999;
+    return av - bv;
+  }}).slice(0, 12);
+  const kwDatasets = kwKeys.map((kw, i) => ({{
+    label: kw,
+    data: fd.map(dt => ({{ x: dt, y: d.keywords[kw][dIdx[dt]] }})).filter(p => p.y != null),
+    borderColor: CWS_COLORS[i % CWS_COLORS.length],
+    backgroundColor: 'transparent', borderWidth: 2, pointRadius: 3, tension: 0.2, spanGaps: false
+  }}));
+  const hasKwData = kwDatasets.some(ds => ds.data.length >= 2);
+  const kEmpty = document.getElementById('cws-k-empty-' + eIdx);
+  const kCanvas = document.getElementById('chart-kw-' + eIdx);
+  if (!hasKwData) {{
+    if (kEmpty) kEmpty.style.display = '';
+    if (kCanvas) kCanvas.style.display = 'none';
+  }} else {{
+    if (kEmpty) kEmpty.style.display = 'none';
+    if (kCanvas) kCanvas.style.display = '';
+    cwsCharts[eIdx + '-kw'] = new Chart(kCanvas, {{
+      type: 'line',
+      data: {{ datasets: kwDatasets }},
+      options: {{ responsive: true,
+        plugins: {{ legend: {{ display: true, position: 'right', labels: {{ boxWidth: 10, font: {{ size: 10 }} }} }},
+          tooltip: {{ callbacks: {{ label: ctx => ' ' + ctx.dataset.label + ': #' + ctx.parsed.y }} }} }},
+        scales: {{ x: {{ type: 'category', grid: {{ display: false }} }},
+                   y: {{ reverse: true, min: 1, ticks: {{ precision: 0 }},
+                         title: {{ display: true, text: 'Rank', font: {{ size: 10 }} }} }} }} }}
+    }});
+  }}
+
+  cwsUpdateComp(eIdx);
+}}
+
+function cwsUpdateComp(eIdx) {{
+  const extId = cwsExtId(eIdx);
+  const d     = CWS_DATA[extId];
+  const mode  = cwsFilters[eIdx] || 'daily';
+  const fd    = cwsFilterDates(d.dates, mode);
+  const dIdx  = {{}};
+  d.dates.forEach((dt, i) => dIdx[dt] = i);
+
+  const sel = document.getElementById('cws-comp-kw-' + eIdx);
+  const kw  = sel ? sel.value : Object.keys(d.keywords)[0];
+
+  cwsDestroyChart(eIdx + '-comp');
+  const compDatasets = [];
+  compDatasets.push({{
+    label: d.our_name,
+    data: fd.map(dt => ({{ x: dt, y: d.keywords[kw][dIdx[dt]] }})).filter(p => p.y != null),
+    borderColor: CWS_COLORS[0], backgroundColor: 'transparent',
+    borderWidth: 3, pointRadius: 4, tension: 0.2, spanGaps: false
+  }});
+  Object.entries(d.competitors).forEach(([cId, comp], i) => {{
+    compDatasets.push({{
+      label: comp.name,
+      data: fd.map(dt => ({{ x: dt, y: comp.keywords[kw][dIdx[dt]] }})).filter(p => p.y != null),
+      borderColor: CWS_COLORS[i + 1], backgroundColor: 'transparent',
+      borderWidth: 2, pointRadius: 3, tension: 0.2, spanGaps: false
+    }});
+  }});
+
+  const hasData = compDatasets.some(ds => ds.data.length >= 2);
+  const cEmpty  = document.getElementById('cws-c-empty-' + eIdx);
+  const cCanvas = document.getElementById('chart-comp-' + eIdx);
+  if (!hasData) {{
+    if (cEmpty) cEmpty.style.display = '';
+    if (cCanvas) cCanvas.style.display = 'none';
+  }} else {{
+    if (cEmpty) cEmpty.style.display = 'none';
+    if (cCanvas) cCanvas.style.display = '';
+    cwsCharts[eIdx + '-comp'] = new Chart(cCanvas, {{
+      type: 'line',
+      data: {{ datasets: compDatasets }},
+      options: {{ responsive: true,
+        plugins: {{ legend: {{ display: true, position: 'right', labels: {{ boxWidth: 10, font: {{ size: 11 }} }} }},
+          tooltip: {{ callbacks: {{ label: ctx => ' ' + ctx.dataset.label + ': #' + ctx.parsed.y }} }} }},
+        scales: {{ x: {{ type: 'category', grid: {{ display: false }} }},
+                   y: {{ reverse: true, min: 1, ticks: {{ precision: 0 }},
+                         title: {{ display: true, text: 'Rank', font: {{ size: 10 }} }} }} }} }}
+    }});
+  }}
+}}
+
+function cwsSetFilter(eIdx, mode, btn) {{
+  cwsFilters[eIdx] = mode;
+  document.getElementById('cws-filter-' + eIdx).querySelectorAll('.filter-btn')
+    .forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  cwsMakeCharts(eIdx);
+}}
+
 function showTab(idx, btn) {{
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
   document.getElementById('tab-' + idx).classList.add('active');
   btn.classList.add('active');
+  cwsMakeCharts(idx);
 }}
+
+window.addEventListener('load', () => cwsMakeCharts(0));
+window.addEventListener('resize', () => {{
+  const active = document.querySelector('.tab-content.active');
+  if (active) cwsMakeCharts(parseInt(active.id.split('-')[1]));
+}});
 </script>
 </body>
 </html>"""
