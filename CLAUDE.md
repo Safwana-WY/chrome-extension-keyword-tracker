@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-> **Maintenance:** Update this file whenever architecture, commands, configuration, or key behaviour changes.
+> **Maintenance:** Update this file whenever architecture, commands, configuration, or key behaviour changes. This includes: adding/removing extensions or keywords, changing the cron schedule, modifying data storage format, updating notification settings, or fixing significant bugs. Keep it current — it is the single source of truth for this project.
 
 ## What this project does
 
@@ -36,13 +36,25 @@ python3 tracker.py --dry
 pip3 install requests
 ```
 
-## Daily automation (cron at 10am IST)
+## Daily automation (launchd at 10am IST)
 
-```
-0 10 * * * cd /Users/safwanata/Desktop/ClaudeProjects/chrome-extension-keyword-tracker && /usr/bin/python3 tracker.py >> data/tracker.log 2>&1 && git add index.html data/positions.json && git commit -m "Daily update $(date +\%Y-\%m-\%d)" && git push >> data/tracker.log 2>&1
+Managed by launchd (not cron). Unlike cron, launchd will run the missed job the next time the Mac wakes up if it was asleep at 10am.
+
+Plist: `~/Library/LaunchAgents/com.webtoffee.chrome-tracker.plist`
+
+```bash
+# Check agent is loaded
+launchctl list | grep webtoffee
+
+# Reload after editing the plist
+launchctl unload ~/Library/LaunchAgents/com.webtoffee.chrome-tracker.plist
+launchctl load   ~/Library/LaunchAgents/com.webtoffee.chrome-tracker.plist
+
+# Trigger a manual run immediately
+launchctl start com.webtoffee.chrome-tracker
 ```
 
-Cron is registered on the local machine. The Mac must be on and awake at 10am IST. Check `data/tracker.log` to confirm runs are succeeding.
+Check `data/tracker.log` to confirm runs are succeeding.
 
 ## Architecture
 
