@@ -54,7 +54,29 @@ launchctl load   ~/Library/LaunchAgents/com.webtoffee.chrome-tracker.plist
 launchctl start com.webtoffee.chrome-tracker
 ```
 
-Check `data/tracker.log` to confirm runs are succeeding.
+Check `data/tracker.log` to confirm runs are succeeding. A successful run ends with `main -> main`.
+
+### SSH setup for git push (one-time)
+
+launchd runs without a shell environment, so `git push` requires SSH auth to work without an agent. This has been configured:
+
+- `~/.ssh/config` — sets `UseKeychain yes` and `AddKeysToAgent yes` for `github.com`
+- SSH key (`~/.ssh/id_ed25519`) added to macOS Keychain via `ssh-add --apple-use-keychain`
+
+If re-setting up on a new machine, run:
+
+```bash
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+```
+
+And ensure `~/.ssh/config` contains:
+
+```
+Host github.com
+    IdentityFile ~/.ssh/id_ed25519
+    UseKeychain yes
+    AddKeysToAgent yes
+```
 
 ## Architecture
 
