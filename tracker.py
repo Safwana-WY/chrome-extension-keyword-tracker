@@ -588,7 +588,7 @@ def generate_dashboard(data, config):
 
         </div>"""
 
-    last_updated       = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+    last_updated       = (datetime.utcnow() + timedelta(hours=5, minutes=30)).strftime("%Y-%m-%d %H:%M IST")
     ext_count          = len(extensions)
     cws_chart_data_json = json.dumps(all_chart_data)
 
@@ -1037,7 +1037,7 @@ def send_slack(data, all_changes, config):
 
     try:
         resp = requests.post(webhook_url, json=payload, timeout=10)
-        if resp.status_code == 200:
+        if resp.status_code == 200 and resp.text == "ok":
             print("Slack notification sent.")
         else:
             print(f"[SLACK ERROR] {resp.status_code}: {resp.text}")
