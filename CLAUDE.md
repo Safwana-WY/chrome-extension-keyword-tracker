@@ -82,8 +82,8 @@ Host github.com
 
 **`tracker.py`** — single-file Python script with four responsibilities:
 1. `run_check()` — scrapes CWS search pages for each keyword × extension ID, records 1-indexed positions; also calls `fetch_users()` per extension
-2. `generate_dashboard()` — writes `index.html` as a self-contained tabbed static page (one tab per extension, no external dependencies)
-3. `send_slack()` — posts a Block Kit message covering all extensions: users, changes, competitor wins/losses
+2. `generate_dashboard()` — writes `index.html` as a self-contained tabbed static page (one tab per extension, no external dependencies). The "Last updated" timestamp in the header is shown in IST (UTC+5:30).
+3. `send_slack()` — posts a Block Kit message covering all extensions: users, changes, competitor wins/losses. Logs a `[SLACK ERROR]` if the response is not `200 ok`.
 4. `send_email()` — optional HTML email alert (disabled by default)
 
 **How `check_position()` works:** Fetches `https://chromewebstore.google.com/search/{keyword}` with a browser User-Agent. Extracts all 32-character lowercase extension IDs from the HTML via regex (Chrome extension IDs are always exactly 32 `a-z` chars), deduplicates while preserving order, and returns the 1-based index of the target extension. Returns `None` if not in top `results_depth` (default 50).
