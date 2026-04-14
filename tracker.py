@@ -143,15 +143,15 @@ def fetch_users(extension_id, delay=1.0):
                 users = int(m.group(1).replace(",", ""))
                 break
 
-        # Rating
+        # Rating — CWS embeds it in aria-label="Average rating X.X out of 5 stars."
         rating = None
-        m = re.search(r'"averageRating"[:\s]+"?([\d.]+)"?', html)
+        m = re.search(r'aria-label="Average rating ([\d.]+) out of 5 stars\."', html)
         if m:
             rating = float(m.group(1))
 
-        # Review count
+        # Review count — CWS renders it as "<p class="xJEoWe">N ratings</p>"
         reviews = None
-        m = re.search(r'"ratingCount"[:\s]+"?(\d+)"?', html)
+        m = re.search(r'<p class="xJEoWe">(\d+) ratings?</p>', html)
         if m:
             reviews = int(m.group(1))
 
