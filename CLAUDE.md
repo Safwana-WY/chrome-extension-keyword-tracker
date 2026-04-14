@@ -99,6 +99,22 @@ Host github.com
 - Changes detected by comparing today vs yesterday per extension
 - Week-on-week comparison shown on stat cards and keyword table; requires 7 days of data
 
+## Dashboard sections
+
+The dashboard (`index.html`) is a self-contained static page with no external JS dependencies. Each tab covers one tracked extension and contains exactly these sections, in order:
+
+1. **Stats row (4 cards)**
+   - Active Installations — user count with day-on-day delta
+   - Reviews — review count + average star rating; clicking links to the CWS reviews page
+   - Keywords in Top 10 — count with WoW delta; clicking expands an inline panel listing each keyword, its current position, and its WoW change
+   - Keywords #11–20 — same behaviour as Top 10 card
+
+2. **Week-on-Week Changes box** — two-column highlighted panel: left = improved keywords (with `#old → #new`), right = declined keywords. Requires 7 days of history; shows a placeholder message otherwise.
+
+3. **Keyword Position History table** — one row per tracked keyword, columns: Current position + last 7 daily snapshots. Positions ≤ 10 are green, ≤ 30 are blue.
+
+4. **Competitor Keyword Positions table** — one row per tracked keyword; each competitor gets two columns (current position + WoW change arrow). Requires `last_week_date` to exist for WoW data.
+
 **Secrets handling:**
 - `secrets.json` (gitignored) holds `slack_webhook_url` and optionally `email_password`
 - `load_config()` merges secrets at runtime — `config.json` has no credentials and is safe to commit

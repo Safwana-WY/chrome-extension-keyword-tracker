@@ -32,16 +32,35 @@
                        letter-spacing: .07em; color: #94a3b8; margin: 28px 0 12px; }
 
     /* ── Stat cards ── */
-    .stats { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-bottom: 28px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 14px; }
     .card { background: #fff; border-radius: 10px; padding: 18px 20px;
-              box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+              box-shadow: 0 1px 3px rgba(0,0,0,.08); text-decoration: none; color: inherit; display: block; }
     .card .value { font-size: 1.75rem; font-weight: 800; color: #2563eb; line-height: 1; }
     .card .label { font-size: .7rem; text-transform: uppercase; letter-spacing: .06em;
                     color: #94a3b8; margin-top: 5px; }
     .card.c-green .value { color: #16a34a; }
-    .card.c-red   .value { color: #dc2626; }
     .card.c-blue  .value { color: #0891b2; }
-    .inst-val { font-size: 1.75rem; font-weight: 800; color: #0891b2; }
+    .card-clickable { cursor: pointer; transition: box-shadow .15s, transform .1s; }
+    .card-clickable:hover { box-shadow: 0 4px 12px rgba(0,0,0,.12); transform: translateY(-1px); }
+    .card-link { cursor: pointer; transition: box-shadow .15s; }
+    .card-link:hover { box-shadow: 0 4px 12px rgba(0,0,0,.12); }
+
+    /* ── Expand panels ── */
+    .expand-panel { background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,.08);
+                     margin-bottom: 14px; overflow: hidden; border: 1px solid #e2e8f0; }
+
+    /* ── WoW box ── */
+    .wow-box { display: grid; grid-template-columns: 1fr 1px 1fr;
+                background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,.08);
+                margin-bottom: 28px; overflow: hidden;
+                border: 1px solid #e2e8f0; }
+    .wow-col { padding: 20px 24px; }
+    .wow-divider { background: #e2e8f0; }
+    .wow-section-title { font-size: .85rem; font-weight: 700; margin-bottom: 12px;
+                           display: flex; align-items: center; gap: 8px; }
+    .wow-count { font-size: 1.5rem; font-weight: 800; line-height: 1; }
+    .wow-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .wow-list li { font-size: .85rem; font-weight: 500; }
 
     /* ── Table wrapper ── */
     .table-wrap { background: #fff; border-radius: 10px;
@@ -60,38 +79,15 @@
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: rgba(0,0,0,.012); }
 
-    .kw-cell   { font-weight: 500; min-width: 200px; }
-    .pos-cell  { font-size: .95rem; font-weight: 700; min-width: 90px; }
-    .trend-cell { min-width: 150px; }
+    .kw-cell  { font-weight: 500; min-width: 200px; }
+    .pos-cell { font-size: .95rem; font-weight: 700; min-width: 90px; }
     .pos-num  { color: #1e293b; }
     .pos-none { font-size: .75rem; color: #cbd5e1; font-weight: 400; }
 
-    .trend-up     { color: #16a34a; font-weight: 600; }
-    .trend-down   { color: #dc2626; font-weight: 600; }
-    .trend-stable { color: #94a3b8; }
-    .trend-new    { color: #7c3aed; font-weight: 600; }
-    .trend-none   { color: #cbd5e1; }
-    small         { font-weight: 400; opacity: .72; }
+    .row-none { opacity: .6; }
 
-    .row-down td { background: #fff5f5; }
-    .row-up   td { background: #f0fdf4; }
-    .row-new  td { background: #faf5ff; }
-    .row-none    { opacity: .6; }
-
-    .comp-cell  { text-align: center; min-width: 120px; font-size: .82rem; }
-    .comp-none  { color: #cbd5e1; }
-    .comp-win   { color: #15803d; background: #f0fdf4; }
-    .comp-lose  { color: #b91c1c; background: #fff5f5; }
-    .comp-tie   { color: #6b7280; }
-
-    .badge-win  { font-size: .65rem; background: #dcfce7; color: #15803d; padding: 1px 5px; border-radius: 3px; margin-left: 3px; }
-    .badge-lose { font-size: .65rem; background: #fee2e2; color: #b91c1c; padding: 1px 5px; border-radius: 3px; margin-left: 3px; }
-    .badge-tie  { font-size: .65rem; background: #f3f4f6; color: #6b7280; padding: 1px 5px; border-radius: 3px; margin-left: 3px; }
-
-    .badge       { font-size: .7rem; padding: 2px 8px; border-radius: 99px; font-weight: 600; }
-    .badge-green { background: #dcfce7; color: #15803d; }
-    .badge-red   { background: #fee2e2; color: #b91c1c; }
-    .badge-gray  { background: #f3f4f6; color: #6b7280; }
+    .comp-cell { text-align: center; min-width: 70px; font-size: .82rem; }
+    .comp-none { color: #cbd5e1; }
 
     .hist-header { text-align: center; }
     .hist-cell   { text-align: center; color: #64748b; font-size: .75rem; min-width: 52px; }
@@ -99,26 +95,14 @@
     .hist-top30  { color: #2563eb; font-weight: 600; }
     .hist-none   { color: #e2e8f0; }
 
-    /* ── Charts ── */
-    .chart-wrap  { background: #fff; border-radius: 10px; padding: 20px 24px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
-    .chart-card  { background: #f8fafc; border-radius: 8px; padding: 16px 18px; }
-    .chart-title { font-size: .8rem; font-weight: 600; color: #475569; margin-bottom: 12px; }
-    .chart-empty { font-size: .78rem; color: #94a3b8; padding: 32px 0; text-align: center; }
-    .chart-toolbar { display: flex; justify-content: flex-end; margin-bottom: 16px; }
-    .chart-filter { display: flex; gap: 4px; background: #f1f5f9; border-radius: 8px; padding: 4px; }
-    .filter-btn { background: transparent; border: none; padding: 5px 14px; font-size: .78rem; font-weight: 500; color: #64748b; border-radius: 5px; cursor: pointer; transition: all .15s; }
-    .filter-btn:hover { color: #1e293b; }
-    .filter-btn.active { background: #fff; color: #2563eb; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
-    .kw-select { border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px 8px; font-size: .78rem; color: #475569; background: #fff; cursor: pointer; outline: none; }
-    .kw-select:focus { border-color: #2563eb; }
-
     @media (max-width: 900px) {
-      .stats { grid-template-columns: repeat(3, 1fr); }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .wow-box { grid-template-columns: 1fr; }
+      .wow-divider { height: 1px; width: 100%; }
       .container { padding: 16px; }
       .tab-bar { padding: 0 16px; }
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -127,7 +111,7 @@
     <h1>Chrome Extension Keyword Tracker</h1>
     <p>1 extension(s) tracked · Chrome Web Store</p>
   </div>
-  <div class="updated">Last updated<br>2026-04-14 10:04 IST</div>
+  <div class="updated">Last updated<br>2026-04-14 15:16 IST</div>
 </header>
 
 <nav class="tab-bar">
@@ -138,424 +122,174 @@
   
         <div id="tab-0" class="tab-content active">
 
-          <div style="margin-bottom:12px">
-            <a href="https://chromewebstore.google.com/detail/nidjdackonjofdcclfbdcapbkgghcdjf" target="_blank" rel="noopener" style="font-size:13px;color:#2563eb;text-decoration:none">&#127760; View on Chrome Web Store &rarr;</a>
-          </div>
-
-          <!-- Stats -->
+          <!-- Stats row -->
           <div class="stats">
             <div class="card c-blue">
               <div class="value">509+</div>
-              <div class="label">Users</div>
+              <div class="label">Active Installations</div>
               <div style="margin-top:4px;min-height:16px"><span style="color:#16a34a;font-size:.75rem">▲ +5+</span></div>
             </div>
-            <div class="card">
-              <div class="value">0/17</div>
-              <div class="label">Ranking</div>
-              <div style="margin-top:4px;min-height:16px"><span style="color:#94a3b8;font-size:.75rem">→ same vs last week</span></div>
-            </div>
-            <div class="card c-green">
+            <a href="https://chromewebstore.google.com/detail/nidjdackonjofdcclfbdcapbkgghcdjf/reviews" target="_blank" rel="noopener" class="card card-link">
+              <div class="value">—</div>
+              <div class="label">Reviews</div>
+              <div style="margin-top:6px;font-size:.9rem;color:#f59e0b;font-weight:700">★ —</div>
+            </a>
+            <div class="card card-clickable c-green" onclick="togglePanel('panel-top10-0')">
               <div class="value">0</div>
-              <div class="label">In Top 10</div>
-              <div style="margin-top:4px;min-height:16px"><span style="color:#94a3b8;font-size:.75rem">→ same vs last week</span></div>
+              <div class="label">Keywords in Top 10 ↗</div>
+              <div style="margin-top:4px;min-height:16px"></div>
             </div>
-            <div class="card">
+            <div class="card card-clickable" onclick="togglePanel('panel-pos1120-0')">
               <div class="value">0</div>
-              <div class="label">In Top 30</div>
-              <div style="margin-top:4px;min-height:16px"><span style="color:#94a3b8;font-size:.75rem">→ same vs last week</span></div>
-            </div>
-            <div class="card c-green">
-              <div class="value">0</div>
-              <div class="label">Beating Competitors</div>
-            </div>
-            <div class="card c-red">
-              <div class="value">0</div>
-              <div class="label">Behind Competitors</div>
-            </div>
-          </div>
-          
-          <div class="section-title">Trends</div>
-          <div class="chart-wrap">
-            <div class="chart-toolbar">
-              <div class="chart-filter" id="cws-filter-0">
-                <button class="filter-btn active" onclick="cwsSetFilter(0,'daily',this)">Daily</button>
-                <button class="filter-btn" onclick="cwsSetFilter(0,'weekly',this)">Weekly</button>
-                <button class="filter-btn" onclick="cwsSetFilter(0,'monthly',this)">Monthly</button>
-              </div>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 2fr;gap:20px;margin-bottom:20px">
-              <div class="chart-card">
-                <div class="chart-title">User Growth</div>
-                <div class="chart-empty" id="cws-u-empty-0" style="display:none">Not enough data yet</div>
-                <canvas id="chart-users-0"></canvas>
-              </div>
-              <div class="chart-card">
-                <div class="chart-title">Keyword Position Trends <span style="font-size:.7rem;font-weight:400;color:#94a3b8">(lower = better)</span></div>
-                <div class="chart-empty" id="cws-k-empty-0" style="display:none">Not enough data yet</div>
-                <canvas id="chart-kw-0"></canvas>
-              </div>
-            </div>
-            <div class="chart-card">
-              <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-                <div class="chart-title" style="margin:0">Competitor Comparison</div>
-                <select class="kw-select" id="cws-comp-kw-0" onchange="cwsUpdateComp(0)">
-                  <option value="accessibility checker">accessibility checker</option>
-<option value="wcag checker">wcag checker</option>
-<option value="web accessibility">web accessibility</option>
-<option value="ada compliance">ada compliance</option>
-<option value="accessibility audit">accessibility audit</option>
-<option value="color contrast checker">color contrast checker</option>
-<option value="aria checker">aria checker</option>
-<option value="accessibility testing">accessibility testing</option>
-<option value="EAA compliance tool">EAA compliance tool</option>
-<option value="WCAG compliance tool">WCAG compliance tool</option>
-<option value="ADA compliance checker">ADA compliance checker</option>
-<option value="accessibility">accessibility</option>
-<option value="website accessibility test">website accessibility test</option>
-<option value="accessibility audit tool">accessibility audit tool</option>
-<option value="free accessibility extension">free accessibility extension</option>
-<option value="web accessibility testing">web accessibility testing</option>
-<option value="accessibility testing for developers">accessibility testing for developers</option>
-                </select>
-              </div>
-              <div class="chart-empty" id="cws-c-empty-0" style="display:none">Not enough data yet</div>
-              <canvas id="chart-comp-0"></canvas>
+              <div class="label">Keywords #11–20 ↗</div>
+              <div style="margin-top:4px;min-height:16px"></div>
             </div>
           </div>
 
-          <!-- Competitor Comparison -->
-          <div class="section-title">Competitor Comparison</div>
+          <!-- Top 10 expandable panel -->
+          <div id="panel-top10-0" class="expand-panel" style="display:none">
+            <div class="table-title">Keywords Ranking in Top 10</div>
+            <p style="padding:20px;color:#94a3b8;text-align:center;font-size:.85rem">No keywords ranking in top 10</p>
+          </div>
+
+          <!-- #11–20 expandable panel -->
+          <div id="panel-pos1120-0" class="expand-panel" style="display:none">
+            <div class="table-title">Keywords Ranking #11–20</div>
+            <p style="padding:20px;color:#94a3b8;text-align:center;font-size:.85rem">No keywords ranking in positions 11–20</p>
+          </div>
+
+          <!-- WoW highlight box -->
+          <div class="section-title">Week-on-Week Changes</div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:28px;text-align:center;color:#94a3b8;font-size:.85rem">Not enough data for week-on-week comparison (need 7 days of history)</div>
+
+          <!-- Keyword position history -->
+          <div class="section-title">Keyword Position History</div>
           <div class="table-wrap" style="margin-bottom:28px">
             <div class="table-title">
-              <span>Head-to-head position and user counts per keyword</span>
+              <span>Daily positions for all tracked keywords</span>
               <div class="legend">
-                <span><span class="legend-dot" style="background:#16a34a"></span>Winning</span>
-                <span><span class="legend-dot" style="background:#dc2626"></span>Behind</span>
+                <span><span class="legend-dot" style="background:#16a34a"></span>Top 10</span>
+                <span><span class="legend-dot" style="background:#2563eb"></span>Top 30</span>
               </div>
             </div>
             <table>
               <thead><tr>
-                <th>Keyword</th><th>Your Position</th><th>Siteimprove</th><th>IBM Equal Access</th><th>WAVE</th><th>Silktide</th><th>Status</th>
-              </tr></thead>
-              <tbody><tr style="background:#f0f9ff"><td class="kw-cell" style="font-weight:700">Users</td><td class="pos-cell"><span class="inst-val">509+</span><br><span style="color:#16a34a;font-size:.75rem">▲ +5+</span></td><td class="comp-cell comp-lose" style="font-weight:600">60K+</td><td class="comp-cell comp-lose" style="font-weight:600">40K+</td><td class="comp-cell comp-lose" style="font-weight:600">700K+</td><td class="comp-cell comp-lose" style="font-weight:600">50K+</td><td></td></tr><tr><td class="kw-cell">accessibility checker</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-lose">#1</td><td class="comp-cell comp-lose">#2</td><td class="comp-cell comp-lose">#6</td><td class="comp-cell comp-lose">#5</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">wcag checker</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-lose">#4</td><td class="comp-cell comp-lose">#3</td><td class="comp-cell comp-lose">#5</td><td class="comp-cell comp-lose">#9</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">web accessibility</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-lose">#8</td><td class="comp-cell comp-lose">#7</td><td class="comp-cell comp-lose">#1</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">ada compliance</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-lose">#10</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-lose">#1</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">accessibility audit</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-gray">Neutral</span></td></tr><tr><td class="kw-cell">color contrast checker</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-gray">Neutral</span></td></tr><tr><td class="kw-cell">aria checker</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-lose">#1</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">accessibility testing</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-lose">#5</td><td class="comp-cell comp-lose">#3</td><td class="comp-cell comp-lose">#2</td><td class="comp-cell comp-lose">#8</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">EAA compliance tool</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-gray">Neutral</span></td></tr><tr><td class="kw-cell">WCAG compliance tool</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-lose">#1</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">ADA compliance checker</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-lose">#3</td><td class="comp-cell comp-lose">#5</td><td class="comp-cell comp-lose">#2</td><td class="comp-cell comp-lose">#8</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">accessibility</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-lose">#1</td><td class="comp-cell comp-lose">#3</td><td class="comp-cell comp-lose">#5</td><td class="comp-cell comp-lose">#4</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">website accessibility test</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-lose">#1</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-lose">#4</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">accessibility audit tool</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-gray">Neutral</span></td></tr><tr><td class="kw-cell">free accessibility extension</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-lose">#3</td><td class="comp-cell comp-lose">#6</td><td class="comp-cell comp-lose">#1</td><td class="comp-cell comp-lose">#4</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">web accessibility testing</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-lose">#4</td><td class="comp-cell comp-lose">#5</td><td class="comp-cell comp-lose">#2</td><td class="comp-cell comp-lose">#7</td><td><span class="badge badge-red">Behind</span></td></tr><tr><td class="kw-cell">accessibility testing for developers</td><td class="pos-cell"><span class="pos-none">—</span></td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-lose">#4</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td><span class="badge badge-red">Behind</span></td></tr></tbody>
-            </table>
-          </div>
-
-          <!-- Full keyword history -->
-          <div class="section-title">All Keywords — Position History</div>
-          <div class="table-wrap">
-            <div class="table-title">
-              <span>Daily positions · sorted by current rank</span>
-              <div class="legend">
-                <span><span class="legend-dot" style="background:#16a34a"></span>Improved</span>
-                <span><span class="legend-dot" style="background:#dc2626"></span>Declined</span>
-                <span><span class="legend-dot" style="background:#7c3aed"></span>New</span>
-              </div>
-            </div>
-            <table>
-              <thead><tr>
-                <th>Keyword</th><th>Your Position</th><th>Siteimprove</th><th>IBM Equal Access</th><th>WAVE</th><th>Silktide</th>
-                <th>Change vs Yesterday</th><th>vs Last Week</th><th class="hist-header">04-08</th><th class="hist-header">04-09</th><th class="hist-header">04-10</th><th class="hist-header">04-11</th><th class="hist-header">04-12</th><th class="hist-header">04-13</th><th class="hist-header">04-14</th>
+                <th>Keyword</th><th>Current</th><th class="hist-header">04-08</th><th class="hist-header">04-09</th><th class="hist-header">04-10</th><th class="hist-header">04-11</th><th class="hist-header">04-12</th><th class="hist-header">04-13</th><th class="hist-header">04-14</th>
               </tr></thead>
               <tbody>
             <tr class="row-none">
               <td class="kw-cell">accessibility checker</td>
               <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell">#1</td><td class="comp-cell">#2</td><td class="comp-cell">#6</td><td class="comp-cell">#5</td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="hist-cell hist-top10">#6</td><td class="hist-cell hist-top10">#6</td><td class="hist-cell hist-top10">#6</td><td class="hist-cell hist-top10">#6</td><td class="hist-cell hist-top10">#6</td><td class="hist-cell hist-top10">#6</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">wcag checker</td>
               <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell">#4</td><td class="comp-cell">#3</td><td class="comp-cell">#5</td><td class="comp-cell">#9</td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">web accessibility</td>
               <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell">#8</td><td class="comp-cell">#7</td><td class="comp-cell">#1</td><td class="comp-cell comp-none">—</td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">ada compliance</td>
               <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell">#10</td><td class="comp-cell comp-none">—</td><td class="comp-cell">#1</td><td class="comp-cell comp-none">—</td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">accessibility audit</td>
               <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="hist-cell hist-top10">#7</td><td class="hist-cell hist-top10">#7</td><td class="hist-cell hist-top10">#7</td><td class="hist-cell hist-top10">#6</td><td class="hist-cell hist-top10">#6</td><td class="hist-cell hist-top10">#6</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">color contrast checker</td>
               <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">aria checker</td>
               <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell">#1</td><td class="comp-cell comp-none">—</td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">accessibility testing</td>
               <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell">#5</td><td class="comp-cell">#3</td><td class="comp-cell">#2</td><td class="comp-cell">#8</td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="hist-cell hist-top10">#10</td><td class="hist-cell hist-top10">#10</td><td class="hist-cell hist-top10">#10</td><td class="hist-cell hist-top10">#10</td><td class="hist-cell hist-top10">#10</td><td class="hist-cell hist-top10">#10</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">EAA compliance tool</td>
               <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="hist-cell hist-top10">#1</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">WCAG compliance tool</td>
               <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell">#1</td><td class="comp-cell comp-none">—</td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-top10">#10</td><td class="hist-cell hist-top10">#9</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">ADA compliance checker</td>
               <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell">#3</td><td class="comp-cell">#5</td><td class="comp-cell">#2</td><td class="comp-cell">#8</td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="hist-cell hist-top10">#7</td><td class="hist-cell hist-top10">#6</td><td class="hist-cell hist-top10">#6</td><td class="hist-cell hist-top10">#6</td><td class="hist-cell hist-top10">#6</td><td class="hist-cell hist-top10">#6</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">accessibility</td>
               <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell">#1</td><td class="comp-cell">#3</td><td class="comp-cell">#5</td><td class="comp-cell">#4</td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">website accessibility test</td>
               <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell">#1</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell">#4</td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="hist-cell hist-top10">#5</td><td class="hist-cell hist-top10">#5</td><td class="hist-cell hist-top10">#5</td><td class="hist-cell hist-top10">#5</td><td class="hist-cell hist-top10">#5</td><td class="hist-cell hist-top10">#5</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">accessibility audit tool</td>
               <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">free accessibility extension</td>
               <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell">#3</td><td class="comp-cell">#6</td><td class="comp-cell">#1</td><td class="comp-cell">#4</td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">web accessibility testing</td>
               <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell">#4</td><td class="comp-cell">#5</td><td class="comp-cell">#2</td><td class="comp-cell">#7</td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="hist-cell hist-none">—</td><td class="hist-cell hist-top10">#10</td><td class="hist-cell hist-top10">#10</td><td class="hist-cell hist-top10">#10</td><td class="hist-cell hist-top10">#10</td><td class="hist-cell hist-top10">#10</td><td class="hist-cell hist-none">—</td>
             </tr>
             <tr class="row-none">
               <td class="kw-cell">accessibility testing for developers</td>
               <td class="pos-cell"><span class="pos-none">Not in top 50</span></td>
-              <td class="comp-cell comp-none">—</td><td class="comp-cell">#4</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none">—</td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
-              <td class="trend-cell"><span class="trend-none">—</span></td>
               <td class="hist-cell hist-top10">#4</td><td class="hist-cell hist-top10">#4</td><td class="hist-cell hist-top10">#5</td><td class="hist-cell hist-top10">#5</td><td class="hist-cell hist-top10">#5</td><td class="hist-cell hist-top10">#5</td><td class="hist-cell hist-none">—</td>
             </tr></tbody>
+            </table>
+          </div>
+
+          <!-- Competitor keyword positions -->
+          <div class="section-title">Competitor Keyword Positions</div>
+          <div class="table-wrap">
+            <div class="table-title">
+              <span>Current positions and week-on-week change per keyword</span>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th rowspan="2" style="vertical-align:bottom">Keyword</th>
+                  <th colspan="2" style="text-align:center;border-left:2px solid #e2e8f0">Siteimprove</th><th colspan="2" style="text-align:center;border-left:2px solid #e2e8f0">IBM Equal Access</th><th colspan="2" style="text-align:center;border-left:2px solid #e2e8f0">WAVE</th><th colspan="2" style="text-align:center;border-left:2px solid #e2e8f0">Silktide</th>
+                </tr>
+                <tr><th style="text-align:center;border-left:2px solid #e2e8f0;font-size:.65rem">Current</th><th style="text-align:center;font-size:.65rem">vs Last Week</th><th style="text-align:center;border-left:2px solid #e2e8f0;font-size:.65rem">Current</th><th style="text-align:center;font-size:.65rem">vs Last Week</th><th style="text-align:center;border-left:2px solid #e2e8f0;font-size:.65rem">Current</th><th style="text-align:center;font-size:.65rem">vs Last Week</th><th style="text-align:center;border-left:2px solid #e2e8f0;font-size:.65rem">Current</th><th style="text-align:center;font-size:.65rem">vs Last Week</th></tr>
+              </thead>
+              <tbody><tr><td class="kw-cell">accessibility checker</td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#1</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#2</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#6</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#5</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td></tr><tr><td class="kw-cell">wcag checker</td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#4</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#3</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#5</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#9</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td></tr><tr><td class="kw-cell">web accessibility</td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#8</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#7</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#1</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td></tr><tr><td class="kw-cell">ada compliance</td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#10</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#1</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td></tr><tr><td class="kw-cell">accessibility audit</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td></tr><tr><td class="kw-cell">color contrast checker</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td></tr><tr><td class="kw-cell">aria checker</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#1</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td></tr><tr><td class="kw-cell">accessibility testing</td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#5</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#3</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#2</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#8</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td></tr><tr><td class="kw-cell">EAA compliance tool</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td></tr><tr><td class="kw-cell">WCAG compliance tool</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#1</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td></tr><tr><td class="kw-cell">ADA compliance checker</td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#3</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#5</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#2</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#8</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td></tr><tr><td class="kw-cell">accessibility</td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#1</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#3</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#5</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#4</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td></tr><tr><td class="kw-cell">website accessibility test</td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#1</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#4</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td></tr><tr><td class="kw-cell">accessibility audit tool</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td></tr><tr><td class="kw-cell">free accessibility extension</td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#3</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#6</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#1</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#4</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td></tr><tr><td class="kw-cell">web accessibility testing</td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#4</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#5</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#2</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#7</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td></tr><tr><td class="kw-cell">accessibility testing for developers</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell" style="border-left:2px solid #e2e8f0">#4</td><td class="comp-cell"><span style="color:#94a3b8;font-size:.75rem">—</span></td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td><td class="comp-cell comp-none" style="border-left:2px solid #e2e8f0">—</td><td class="comp-cell comp-none">—</td></tr></tbody>
             </table>
           </div>
 
         </div>
 </div>
 
-<script type="application/json" id="cws-chart-data">{"nidjdackonjofdcclfbdcapbkgghcdjf": {"dates": ["2026-04-06", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-11", "2026-04-12", "2026-04-13", "2026-04-14"], "our_name": "Accessibility Checker by WebToffee", "users": [486, 502, 510, 527, 500, 500, 504, 509], "keywords": {"accessibility checker": [6, 6, 6, 6, 6, 6, 6, null], "wcag checker": [9, 9, 9, 9, 9, 9, 9, null], "web accessibility": [null, null, null, null, null, null, null, null], "ada compliance": [9, 9, 9, 9, 9, 9, 9, null], "accessibility audit": [7, 7, 7, 7, 6, 6, 6, null], "color contrast checker": [null, null, null, null, null, null, null, null], "aria checker": [null, null, null, null, null, null, null, null], "accessibility testing": [10, 10, 10, 10, 10, 10, 10, null], "EAA compliance tool": [null, 1, null, null, null, null, null, null], "WCAG compliance tool": [null, null, null, null, 10, 9, null, null], "ADA compliance checker": [null, 7, 6, 6, 6, 6, 6, null], "accessibility": [null, null, null, null, null, null, null, null], "website accessibility test": [null, 5, 5, 5, 5, 5, 5, null], "accessibility audit tool": [null, null, null, null, null, null, null, null], "free accessibility extension": [null, null, null, null, null, null, null, null], "web accessibility testing": [null, null, 10, 10, 10, 10, 10, null], "accessibility testing for developers": [null, 4, 4, 5, 5, 5, 5, null]}, "competitors": {"djcglbmbegflehmbfleechkjhmedcopn": {"name": "Siteimprove", "keywords": {"accessibility checker": [1, 1, 1, 1, 1, 1, 1, 1], "wcag checker": [5, 5, 5, 5, 4, 4, 4, 4], "web accessibility": [8, 8, 8, 8, 8, 8, 8, 8], "ada compliance": [10, null, null, null, null, null, null, 10], "accessibility audit": [null, null, null, null, null, null, null, null], "color contrast checker": [null, null, null, null, null, null, null, null], "aria checker": [null, null, null, null, null, null, null, null], "accessibility testing": [4, 4, 4, 4, 4, 5, 5, 5], "EAA compliance tool": [null, null, null, null, null, null, null, null], "WCAG compliance tool": [null, null, null, null, null, null, null, null], "ADA compliance checker": [null, 3, 3, 3, 3, 3, 3, 3], "accessibility": [null, 1, 1, 1, 1, 1, 1, 1], "website accessibility test": [null, 1, 1, 1, 1, 1, 1, 1], "accessibility audit tool": [null, null, null, null, null, null, null, null], "free accessibility extension": [null, 4, 4, 4, 4, 5, 3, 3], "web accessibility testing": [null, 4, 4, 4, 4, 4, 4, 4], "accessibility testing for developers": [null, null, null, 9, null, null, null, null]}}, "lkcagbfjnkomcinoddgooolagloogehp": {"name": "IBM Equal Access", "keywords": {"accessibility checker": [2, 2, 2, 2, 2, 2, 2, 2], "wcag checker": [3, 3, 3, 3, 3, 3, 3, 3], "web accessibility": [7, 7, 7, 7, 7, 7, 7, 7], "ada compliance": [null, null, null, null, null, null, null, null], "accessibility audit": [null, null, null, null, null, null, null, null], "color contrast checker": [null, null, null, null, null, null, null, null], "aria checker": [null, null, null, null, null, null, null, null], "accessibility testing": [3, 3, 3, 3, 3, 3, 3, 3], "EAA compliance tool": [null, null, null, null, null, null, null, null], "WCAG compliance tool": [null, null, null, null, null, null, null, null], "ADA compliance checker": [null, 6, 5, 5, 5, 5, 5, 5], "accessibility": [null, 3, 3, 3, 3, 3, 3, 3], "website accessibility test": [null, null, null, null, null, null, null, null], "accessibility audit tool": [null, null, null, null, null, null, null, null], "free accessibility extension": [null, 6, 6, 6, 6, 6, 6, 6], "web accessibility testing": [null, 5, 5, 5, 5, 5, 5, 5], "accessibility testing for developers": [null, 5, 5, 4, 4, 4, 4, 4]}}, "jbbplnpkjmmeebjpijfedlgcdilocofh": {"name": "WAVE", "keywords": {"accessibility checker": [7, 7, 7, 7, 7, 7, 7, 6], "wcag checker": [4, 4, 4, 4, 5, 5, 5, 5], "web accessibility": [3, 3, null, 3, 1, 1, 1, 1], "ada compliance": [1, 1, 1, 1, 1, 1, 1, 1], "accessibility audit": [null, null, null, null, null, null, null, null], "color contrast checker": [null, null, null, null, null, null, null, null], "aria checker": [1, 1, 1, 1, 1, 1, 1, 1], "accessibility testing": [2, 2, 2, 2, 2, 2, 2, 2], "EAA compliance tool": [null, null, null, null, null, null, null, null], "WCAG compliance tool": [null, 1, 1, 1, 1, null, 1, 1], "ADA compliance checker": [null, 1, 1, 1, 2, 2, 2, 2], "accessibility": [null, 5, 5, 5, 5, 5, 5, 5], "website accessibility test": [null, null, null, null, null, null, null, null], "accessibility audit tool": [null, null, null, null, null, null, null, null], "free accessibility extension": [null, 1, 1, 1, 1, 1, 1, 1], "web accessibility testing": [null, 2, 2, 2, 2, 2, 2, 2], "accessibility testing for developers": [null, null, null, 6, null, null, null, null]}}, "mpobacholfblmnpnfbiomjkecoojakah": {"name": "Silktide", "keywords": {"accessibility checker": [null, 5, 5, 5, 4, null, 5, 5], "wcag checker": [null, 10, 10, 10, 10, 10, 10, 9], "web accessibility": [null, 9, 9, 9, 9, null, null, null], "ada compliance": [null, null, null, null, null, null, null, null], "accessibility audit": [null, null, null, null, null, null, null, null], "color contrast checker": [null, null, null, null, null, null, null, null], "aria checker": [null, null, null, null, null, null, null, null], "accessibility testing": [null, 9, 9, 8, 8, 9, 9, 8], "EAA compliance tool": [null, null, null, null, null, null, null, null], "WCAG compliance tool": [null, null, null, null, null, null, null, null], "ADA compliance checker": [null, 9, 9, 9, 8, 8, 9, 8], "accessibility": [null, 4, 4, 4, 4, 4, 4, 4], "website accessibility test": [null, 3, 3, 3, 4, 4, 4, 4], "accessibility audit tool": [null, null, null, null, null, null, null, null], "free accessibility extension": [null, 3, 3, 3, 3, 3, 4, 4], "web accessibility testing": [null, 7, null, 7, 7, 7, 7, 7], "accessibility testing for developers": [null, null, null, null, null, null, null, null]}}}}}</script>
 <script>
-const CWS_DATA    = JSON.parse(document.getElementById('cws-chart-data').textContent);
-const CWS_COLORS  = ['#2563eb','#dc2626','#16a34a','#d97706','#7c3aed','#0891b2','#db2777','#65a30d','#ea580c','#0284c7'];
-const cwsFilters  = {};
-const cwsCharts   = {};
-
-function cwsISOWeek(ds) {
-  const d = new Date(ds + 'T00:00:00Z'), day = d.getUTCDay() || 7;
-  d.setUTCDate(d.getUTCDate() + 4 - day);
-  const ys = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  return d.getUTCFullYear() + '-W' + String(Math.ceil(((d - ys) / 86400000 + 1) / 7)).padStart(2, '0');
-}
-
-function cwsFilterDates(dates, mode) {
-  if (!dates || !dates.length) return [];
-  if (mode === 'daily') return dates;
-  const last = {};
-  for (const d of dates) { const k = mode === 'weekly' ? cwsISOWeek(d) : d.substring(0,7); last[k] = d; }
-  return Object.values(last).sort();
-}
-
-function cwsExtId(idx) { return Object.keys(CWS_DATA)[idx]; }
-
-function cwsDestroyChart(key) {
-  if (cwsCharts[key]) { cwsCharts[key].destroy(); delete cwsCharts[key]; }
-}
-
-function cwsMakeCharts(eIdx) {
-  const extId = cwsExtId(eIdx);
-  const d     = CWS_DATA[extId];
-  const mode  = cwsFilters[eIdx] || 'daily';
-  const fd    = cwsFilterDates(d.dates, mode);
-  const dIdx  = {};
-  d.dates.forEach((dt, i) => dIdx[dt] = i);
-
-  const getVals = (arr) => fd.map(dt => arr[dIdx[dt]] != null ? arr[dIdx[dt]] : null);
-
-  // ── Users ──
-  cwsDestroyChart(eIdx + '-users');
-  const usersVals = fd.map(dt => d.users[dIdx[dt]]).filter(v => v != null);
-  const uEmpty = document.getElementById('cws-u-empty-' + eIdx);
-  const uCanvas = document.getElementById('chart-users-' + eIdx);
-  if (usersVals.length < 2) {
-    if (uEmpty) uEmpty.style.display = '';
-    if (uCanvas) uCanvas.style.display = 'none';
-  } else {
-    if (uEmpty) uEmpty.style.display = 'none';
-    if (uCanvas) uCanvas.style.display = '';
-    cwsCharts[eIdx + '-users'] = new Chart(uCanvas, {
-      type: 'line',
-      data: { datasets: [{ label: 'Users',
-        data: fd.map(dt => ({ x: dt, y: d.users[dIdx[dt]] })).filter(p => p.y != null),
-        borderColor: '#0891b2', backgroundColor: 'rgba(8,145,178,0.08)',
-        borderWidth: 2, pointRadius: 3, tension: 0.3, fill: true }] },
-      options: { responsive: true,
-        plugins: { legend: { display: false },
-          tooltip: { callbacks: { label: ctx => ' ' + ctx.parsed.y.toLocaleString() + ' users' } } },
-        scales: { x: { type: 'category', grid: { display: false } },
-                   y: { beginAtZero: false, ticks: { precision: 0 } } } }
-    });
-  }
-
-  // ── Keyword positions ──
-  cwsDestroyChart(eIdx + '-kw');
-  const kwKeys = Object.keys(d.keywords).sort((a, b) => {
-    const av = [...d.keywords[a]].reverse().find(v => v != null) || 9999;
-    const bv = [...d.keywords[b]].reverse().find(v => v != null) || 9999;
-    return av - bv;
-  }).slice(0, 12);
-  const kwDatasets = kwKeys.map((kw, i) => ({
-    label: kw,
-    data: fd.map(dt => ({ x: dt, y: d.keywords[kw][dIdx[dt]] })).filter(p => p.y != null),
-    borderColor: CWS_COLORS[i % CWS_COLORS.length],
-    backgroundColor: 'transparent', borderWidth: 2, pointRadius: 3, tension: 0.2, spanGaps: false
-  }));
-  const hasKwData = kwDatasets.some(ds => ds.data.length >= 2);
-  const kEmpty = document.getElementById('cws-k-empty-' + eIdx);
-  const kCanvas = document.getElementById('chart-kw-' + eIdx);
-  if (!hasKwData) {
-    if (kEmpty) kEmpty.style.display = '';
-    if (kCanvas) kCanvas.style.display = 'none';
-  } else {
-    if (kEmpty) kEmpty.style.display = 'none';
-    if (kCanvas) kCanvas.style.display = '';
-    cwsCharts[eIdx + '-kw'] = new Chart(kCanvas, {
-      type: 'line',
-      data: { datasets: kwDatasets },
-      options: { responsive: true,
-        plugins: { legend: { display: true, position: 'right', labels: { boxWidth: 10, font: { size: 10 } } },
-          tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': #' + ctx.parsed.y } } },
-        scales: { x: { type: 'category', grid: { display: false } },
-                   y: { reverse: true, min: 1, ticks: { precision: 0 },
-                         title: { display: true, text: 'Rank', font: { size: 10 } } } } }
-    });
-  }
-
-  cwsUpdateComp(eIdx);
-}
-
-function cwsUpdateComp(eIdx) {
-  const extId = cwsExtId(eIdx);
-  const d     = CWS_DATA[extId];
-  const mode  = cwsFilters[eIdx] || 'daily';
-  const fd    = cwsFilterDates(d.dates, mode);
-  const dIdx  = {};
-  d.dates.forEach((dt, i) => dIdx[dt] = i);
-
-  const sel = document.getElementById('cws-comp-kw-' + eIdx);
-  const kw  = sel ? sel.value : Object.keys(d.keywords)[0];
-
-  cwsDestroyChart(eIdx + '-comp');
-  const compDatasets = [];
-  compDatasets.push({
-    label: d.our_name,
-    data: fd.map(dt => ({ x: dt, y: d.keywords[kw][dIdx[dt]] })).filter(p => p.y != null),
-    borderColor: CWS_COLORS[0], backgroundColor: 'transparent',
-    borderWidth: 3, pointRadius: 4, tension: 0.2, spanGaps: false
-  });
-  Object.entries(d.competitors).forEach(([cId, comp], i) => {
-    compDatasets.push({
-      label: comp.name,
-      data: fd.map(dt => ({ x: dt, y: comp.keywords[kw][dIdx[dt]] })).filter(p => p.y != null),
-      borderColor: CWS_COLORS[i + 1], backgroundColor: 'transparent',
-      borderWidth: 2, pointRadius: 3, tension: 0.2, spanGaps: false
-    });
-  });
-
-  const hasData = compDatasets.some(ds => ds.data.length >= 2);
-  const cEmpty  = document.getElementById('cws-c-empty-' + eIdx);
-  const cCanvas = document.getElementById('chart-comp-' + eIdx);
-  if (!hasData) {
-    if (cEmpty) cEmpty.style.display = '';
-    if (cCanvas) cCanvas.style.display = 'none';
-  } else {
-    if (cEmpty) cEmpty.style.display = 'none';
-    if (cCanvas) cCanvas.style.display = '';
-    cwsCharts[eIdx + '-comp'] = new Chart(cCanvas, {
-      type: 'line',
-      data: { datasets: compDatasets },
-      options: { responsive: true,
-        plugins: { legend: { display: true, position: 'right', labels: { boxWidth: 10, font: { size: 11 } } },
-          tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': #' + ctx.parsed.y } } },
-        scales: { x: { type: 'category', grid: { display: false } },
-                   y: { reverse: true, min: 1, ticks: { precision: 0 },
-                         title: { display: true, text: 'Rank', font: { size: 10 } } } } }
-    });
-  }
-}
-
-function cwsSetFilter(eIdx, mode, btn) {
-  cwsFilters[eIdx] = mode;
-  document.getElementById('cws-filter-' + eIdx).querySelectorAll('.filter-btn')
-    .forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  cwsMakeCharts(eIdx);
+function togglePanel(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = el.style.display === 'none' ? '' : 'none';
 }
 
 function showTab(idx, btn) {
@@ -563,14 +297,7 @@ function showTab(idx, btn) {
   document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
   document.getElementById('tab-' + idx).classList.add('active');
   btn.classList.add('active');
-  cwsMakeCharts(idx);
 }
-
-window.addEventListener('load', () => cwsMakeCharts(0));
-window.addEventListener('resize', () => {
-  const active = document.querySelector('.tab-content.active');
-  if (active) cwsMakeCharts(parseInt(active.id.split('-')[1]));
-});
 </script>
 </body>
 </html>
