@@ -515,8 +515,16 @@ def generate_dashboard(data, config):
         active_cls = "active" if e_idx == 0 else ""
         tabs_html += f'<button class="tab {active_cls}" onclick="showTab({e_idx}, this)">{ext_name}</button>'
 
+        cws_product_url = f"https://chromewebstore.google.com/detail/{ext_id}"
         content_html += f"""
         <div id="tab-{e_idx}" class="tab-content {active_cls}">
+
+          <div style="margin-bottom:20px">
+            <a href="{cws_product_url}" target="_blank" rel="noopener"
+               style="font-size:.85rem;color:#6366f1;text-decoration:none;font-weight:600">
+              ↗ View on Chrome Web Store
+            </a>
+          </div>
 
           <!-- Stats row -->
           <div class="stats">
