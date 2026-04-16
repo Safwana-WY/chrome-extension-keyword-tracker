@@ -88,7 +88,7 @@ Host github.com
 
 **How `check_position()` works:** Fetches `https://chromewebstore.google.com/search/{keyword}` with a browser User-Agent. Extracts all 32-character lowercase extension IDs from the HTML via regex (Chrome extension IDs are always exactly 32 `a-z` chars), deduplicates while preserving order, and returns the 1-based index of the target extension. Returns `None` if not in top `results_depth` (default 50).
 
-**How `fetch_users()` works:** Fetches the CWS detail page and extracts user count, rating, and review count via regex. Stores as `_users`, `_rating`, `_reviews`.
+**How `fetch_users()` works:** Fetches the CWS detail page and extracts user count, rating, and review count via regex. Stores as `_users`, `_rating`, `_reviews`. Current patterns: user count from `(\d[\d,]+)\+?\s+users`; rating from `aria-label="Average rating ([\d.]+) out of 5 stars."`; review count from `<p class="xJEoWe">(\d+) ratings?</p>`. If CWS changes their HTML, update these patterns in `fetch_users()`.
 
 **`config.json`** — single source of truth for all extension definitions, keywords, and notification settings. Currently tracking 17 keywords × 5 extensions; each run takes ~3 minutes (2s delay per request). Slack posts to `#chrome-extension-keyword-tracking`.
 
@@ -102,6 +102,8 @@ Host github.com
 ## Dashboard sections
 
 The dashboard (`index.html`) is a self-contained static page with no external JS dependencies. Each tab covers one tracked extension and contains exactly these sections, in order:
+
+0. **Product page link** — "↗ View on Chrome Web Store" link at the top of each tab, opening `https://chromewebstore.google.com/detail/{ext_id}` in a new tab.
 
 1. **Stats row (4 cards)**
    - Active Installations — user count with day-on-day delta
