@@ -1165,5 +1165,86 @@
       "_rating": 4.5,
       "_reviews": 42
     }
+  },
+  "2026-04-18": {
+    "nidjdackonjofdcclfbdcapbkgghcdjf": {
+      "accessibility checker": 6,
+      "wcag checker": 7,
+      "web accessibility": null,
+      "ada compliance": 9,
+      "accessibility audit": 6,
+      "color contrast checker": null,
+      "aria checker": null,
+      "accessibility testing": 10,
+      "EAA compliance tool": null,
+      "WCAG compliance tool": 9,
+      "ADA compliance checker": 6,
+      "accessibility": null,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "djcglbmbegflehmbfleechkjhmedcopn": {
+      "accessibility checker": 1,
+      "wcag checker": 5,
+      "web accessibility": 8,
+      "ada compliance": 10,
+      "accessibility audit": null,
+      "color contrast checker": null,
+      "aria checker": null,
+      "WCAG compliance tool": null,
+      "ADA compliance checker": 3,
+      "accessibility": 1,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "lkcagbfjnkomcinoddgooolagloogehp": {
+      "accessibility checker": 2,
+      "wcag checker": 3,
+      "web accessibility": 7,
+      "ada compliance": null,
+      "accessibility audit": null,
+      "color contrast checker": null,
+      "aria checker": null,
+      "EAA compliance tool": null,
+      "WCAG compliance tool": null,
+      "ADA compliance checker": 7,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "jbbplnpkjmmeebjpijfedlgcdilocofh": {
+      "accessibility checker": 7,
+      "wcag checker": 6,
+      "web accessibility": 1,
+      "ada compliance": 1,
+      "accessibility audit": null,
+      "color contrast checker": null,
+      "aria checker": 1,
+      "accessibility testing": 2,
+      "EAA compliance tool": null,
+      "WCAG compliance tool": 1,
+      "ADA compliance checker": 2,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "mpobacholfblmnpnfbiomjkecoojakah": {
+      "accessibility checker": 4,
+      "wcag checker": 10,
+      "web accessibility": null,
+      "ada compliance": null,
+      "accessibility audit": null,
+      "color contrast checker": null,
+      "aria checker": null,
+      "accessibility testing": 9,
+      "EAA compliance tool": null,
+      "WCAG compliance tool": null,
+      "ADA compliance checker": 10,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    }
   }
 }
