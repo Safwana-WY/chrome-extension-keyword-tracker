@@ -2049,5 +2049,40 @@
       "_rating": null,
       "_reviews": null
     }
+  },
+  "2026-04-27": {
+    "nidjdackonjofdcclfbdcapbkgghcdjf": {
+      "web accessibility": null,
+      "_users": 632,
+      "_rating": 4.9,
+      "_reviews": 4
+    },
+    "djcglbmbegflehmbfleechkjhmedcopn": {
+      "web accessibility": 8,
+      "ada compliance": 10,
+      "_users": 60000,
+      "_rating": 3.9,
+      "_reviews": 25
+    },
+    "lkcagbfjnkomcinoddgooolagloogehp": {
+      "wcag checker": 4,
+      "web accessibility": 7,
+      "_users": 40000,
+      "_rating": 4.2,
+      "_reviews": 16
+    },
+    "jbbplnpkjmmeebjpijfedlgcdilocofh": {
+      "wcag checker": 5,
+      "_users": 700000,
+      "_rating": 3.8,
+      "_reviews": 156
+    },
+    "mpobacholfblmnpnfbiomjkecoojakah": {
+      "wcag checker": 9,
+      "web accessibility": null,
+      "_users": 50000,
+      "_rating": 4.5,
+      "_reviews": 42
+    }
   }
 }
