@@ -2497,5 +2497,60 @@
       "_rating": 4.5,
       "_reviews": 42
     }
+  },
+  "2026-05-01": {
+    "nidjdackonjofdcclfbdcapbkgghcdjf": {
+      "wcag checker": 7,
+      "ada compliance": 8,
+      "free accessibility extension": null,
+      "web accessibility testing": 10,
+      "accessibility testing for developers": 5,
+      "_users": 643,
+      "_rating": 4.9,
+      "_reviews": 4
+    },
+    "djcglbmbegflehmbfleechkjhmedcopn": {
+      "wcag checker": 6,
+      "web accessibility": 8,
+      "free accessibility extension": 3,
+      "web accessibility testing": 4,
+      "accessibility testing for developers": null,
+      "_users": 60000,
+      "_rating": 3.9,
+      "_reviews": 25
+    },
+    "lkcagbfjnkomcinoddgooolagloogehp": {
+      "wcag checker": 4,
+      "web accessibility": 7,
+      "accessibility audit tool": null,
+      "free accessibility extension": 7,
+      "web accessibility testing": 6,
+      "accessibility testing for developers": 4,
+      "_users": 40000,
+      "_rating": 4.2,
+      "_reviews": 16
+    },
+    "jbbplnpkjmmeebjpijfedlgcdilocofh": {
+      "wcag checker": 5,
+      "accessibility audit tool": null,
+      "free accessibility extension": 1,
+      "web accessibility testing": 1,
+      "accessibility testing for developers": null,
+      "_users": 700000,
+      "_rating": 3.8,
+      "_reviews": 156
+    },
+    "mpobacholfblmnpnfbiomjkecoojakah": {
+      "accessibility checker": 5,
+      "wcag checker": 10,
+      "web accessibility": null,
+      "accessibility audit tool": null,
+      "free accessibility extension": 4,
+      "web accessibility testing": 7,
+      "accessibility testing for developers": null,
+      "_users": 50000,
+      "_rating": 4.5,
+      "_reviews": 42
+    }
   }
 }
