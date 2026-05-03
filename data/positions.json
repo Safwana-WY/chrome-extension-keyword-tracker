@@ -2579,5 +2579,68 @@
       "_rating": null,
       "_reviews": null
     }
+  },
+  "2026-05-03": {
+    "nidjdackonjofdcclfbdcapbkgghcdjf": {
+      "aria checker": null,
+      "accessibility testing": 9,
+      "EAA compliance tool": 1,
+      "WCAG compliance tool": null,
+      "ADA compliance checker": 6,
+      "accessibility": null,
+      "website accessibility test": 5,
+      "accessibility audit tool": null,
+      "accessibility testing for developers": 4,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "djcglbmbegflehmbfleechkjhmedcopn": {
+      "aria checker": null,
+      "accessibility testing": 5,
+      "EAA compliance tool": null,
+      "WCAG compliance tool": null,
+      "ADA compliance checker": 3,
+      "accessibility": 1,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "lkcagbfjnkomcinoddgooolagloogehp": {
+      "aria checker": null,
+      "accessibility testing": 3,
+      "EAA compliance tool": null,
+      "WCAG compliance tool": 8,
+      "ADA compliance checker": 7,
+      "accessibility": 3,
+      "website accessibility test": null,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "jbbplnpkjmmeebjpijfedlgcdilocofh": {
+      "aria checker": 1,
+      "accessibility testing": 2,
+      "EAA compliance tool": null,
+      "WCAG compliance tool": 1,
+      "ADA compliance checker": 2,
+      "accessibility": 4,
+      "website accessibility test": null,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "mpobacholfblmnpnfbiomjkecoojakah": {
+      "aria checker": null,
+      "accessibility testing": 8,
+      "EAA compliance tool": null,
+      "WCAG compliance tool": null,
+      "accessibility": 9,
+      "website accessibility test": 4,
+      "web accessibility testing": 7,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    }
   }
 }
