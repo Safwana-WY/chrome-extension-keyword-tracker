@@ -4796,5 +4796,54 @@
       "_rating": 4.5,
       "_reviews": 41
     }
+  },
+  "2026-05-26": {
+    "nidjdackonjofdcclfbdcapbkgghcdjf": {
+      "accessibility checker": 10,
+      "wcag checker": null,
+      "web accessibility testing": null,
+      "accessibility testing for developers": 8,
+      "_users": 793,
+      "_rating": 5.0,
+      "_reviews": 5
+    },
+    "djcglbmbegflehmbfleechkjhmedcopn": {
+      "accessibility checker": 1,
+      "wcag checker": 4,
+      "web accessibility testing": 3,
+      "accessibility testing for developers": null,
+      "_users": 60000,
+      "_rating": 3.9,
+      "_reviews": 25
+    },
+    "lkcagbfjnkomcinoddgooolagloogehp": {
+      "accessibility checker": 2,
+      "wcag checker": 3,
+      "free accessibility extension": 5,
+      "web accessibility testing": 4,
+      "accessibility testing for developers": 2,
+      "_users": 40000,
+      "_rating": 4.2,
+      "_reviews": 16
+    },
+    "jbbplnpkjmmeebjpijfedlgcdilocofh": {
+      "accessibility checker": null,
+      "wcag checker": null,
+      "free accessibility extension": null,
+      "web accessibility testing": 10,
+      "accessibility testing for developers": null,
+      "_users": 700000,
+      "_rating": 3.8,
+      "_reviews": 158
+    },
+    "mpobacholfblmnpnfbiomjkecoojakah": {
+      "accessibility checker": 5,
+      "free accessibility extension": 3,
+      "web accessibility testing": 5,
+      "accessibility testing for developers": null,
+      "_users": 50000,
+      "_rating": 4.5,
+      "_reviews": 41
+    }
   }
 }
