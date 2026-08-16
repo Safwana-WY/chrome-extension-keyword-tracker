@@ -12783,5 +12783,76 @@
       "_rating": 4.5,
       "_reviews": 41
     }
+  },
+  "2026-08-16": {
+    "nidjdackonjofdcclfbdcapbkgghcdjf": {
+      "EAA compliance tool": null,
+      "ADA compliance checker": 3,
+      "accessibility": 5,
+      "website accessibility test": 5,
+      "accessibility audit tool": null,
+      "free accessibility extension": 4,
+      "web accessibility testing": 8,
+      "accessibility testing for developers": 3,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "djcglbmbegflehmbfleechkjhmedcopn": {
+      "EAA compliance tool": null,
+      "WCAG compliance tool": null,
+      "ADA compliance checker": 5,
+      "accessibility": 1,
+      "website accessibility test": 2,
+      "accessibility audit tool": null,
+      "free accessibility extension": 3,
+      "accessibility testing for developers": null,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "lkcagbfjnkomcinoddgooolagloogehp": {
+      "EAA compliance tool": null,
+      "WCAG compliance tool": null,
+      "ADA compliance checker": 6,
+      "accessibility": 2,
+      "website accessibility test": null,
+      "accessibility audit tool": null,
+      "free accessibility extension": 6,
+      "web accessibility testing": 4,
+      "accessibility testing for developers": 2,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "jbbplnpkjmmeebjpijfedlgcdilocofh": {
+      "accessibility testing": 3,
+      "EAA compliance tool": null,
+      "WCAG compliance tool": 1,
+      "ADA compliance checker": 4,
+      "accessibility": 6,
+      "website accessibility test": null,
+      "accessibility audit tool": null,
+      "free accessibility extension": 1,
+      "web accessibility testing": 1,
+      "accessibility testing for developers": null,
+      "_users": 600000,
+      "_rating": 3.8,
+      "_reviews": 159
+    },
+    "mpobacholfblmnpnfbiomjkecoojakah": {
+      "accessibility testing": 10,
+      "EAA compliance tool": null,
+      "WCAG compliance tool": null,
+      "ADA compliance checker": 10,
+      "accessibility": 8,
+      "website accessibility test": 6,
+      "accessibility audit tool": null,
+      "free accessibility extension": 5,
+      "web accessibility testing": 7,
+      "_users": 50000,
+      "_rating": 4.5,
+      "_reviews": 41
+    }
   }
 }
