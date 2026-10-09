@@ -17519,5 +17519,62 @@
       "_rating": 4.6,
       "_reviews": 40
     }
+  },
+  "2026-10-09": {
+    "nidjdackonjofdcclfbdcapbkgghcdjf": {
+      "aria checker": null,
+      "EAA compliance tool": null,
+      "WCAG compliance tool": 6,
+      "ADA compliance checker": 3,
+      "accessibility": 3,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "djcglbmbegflehmbfleechkjhmedcopn": {
+      "aria checker": null,
+      "accessibility testing": 6,
+      "EAA compliance tool": null,
+      "WCAG compliance tool": null,
+      "ADA compliance checker": 5,
+      "accessibility": 2,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "lkcagbfjnkomcinoddgooolagloogehp": {
+      "color contrast checker": null,
+      "aria checker": null,
+      "accessibility testing": 2,
+      "WCAG compliance tool": null,
+      "ADA compliance checker": 7,
+      "accessibility": 1,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "jbbplnpkjmmeebjpijfedlgcdilocofh": {
+      "color contrast checker": null,
+      "aria checker": 1,
+      "accessibility testing": 3,
+      "EAA compliance tool": null,
+      "WCAG compliance tool": 1,
+      "ADA compliance checker": 4,
+      "accessibility": 7,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "mpobacholfblmnpnfbiomjkecoojakah": {
+      "color contrast checker": null,
+      "aria checker": null,
+      "accessibility testing": 9,
+      "EAA compliance tool": null,
+      "WCAG compliance tool": null,
+      "ADA compliance checker": null,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    }
   }
 }
