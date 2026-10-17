@@ -18135,5 +18135,53 @@
       "_rating": 4.6,
       "_reviews": 40
     }
+  },
+  "2026-10-17": {
+    "nidjdackonjofdcclfbdcapbkgghcdjf": {
+      "accessibility checker": 1,
+      "wcag checker": 3,
+      "web accessibility": null,
+      "accessibility audit": 7,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "djcglbmbegflehmbfleechkjhmedcopn": {
+      "accessibility checker": 2,
+      "wcag checker": 7,
+      "web accessibility": null,
+      "ada compliance": null,
+      "accessibility audit": null,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "lkcagbfjnkomcinoddgooolagloogehp": {
+      "accessibility checker": 3,
+      "wcag checker": 4,
+      "web accessibility": 6,
+      "ada compliance": null,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "jbbplnpkjmmeebjpijfedlgcdilocofh": {
+      "accessibility checker": 8,
+      "wcag checker": 10,
+      "web accessibility": 1,
+      "ada compliance": 2,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    },
+    "mpobacholfblmnpnfbiomjkecoojakah": {
+      "accessibility checker": 5,
+      "wcag checker": null,
+      "web accessibility": null,
+      "ada compliance": null,
+      "_users": null,
+      "_rating": null,
+      "_reviews": null
+    }
   }
 }
