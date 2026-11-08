@@ -20124,5 +20124,40 @@
       "_rating": null,
       "_reviews": null
     }
+  },
+  "2026-11-08": {
+    "nidjdackonjofdcclfbdcapbkgghcdjf": {
+      "accessibility testing for developers": 2,
+      "_users": 1000,
+      "_rating": 4.9,
+      "_reviews": 13
+    },
+    "djcglbmbegflehmbfleechkjhmedcopn": {
+      "accessibility checker": 2,
+      "accessibility testing for developers": null,
+      "_users": 60000,
+      "_rating": 3.2,
+      "_reviews": 25
+    },
+    "lkcagbfjnkomcinoddgooolagloogehp": {
+      "accessibility testing for developers": 4,
+      "_users": 30000,
+      "_rating": 4.9,
+      "_reviews": 16
+    },
+    "jbbplnpkjmmeebjpijfedlgcdilocofh": {
+      "web accessibility testing": 1,
+      "accessibility testing for developers": null,
+      "_users": 700000,
+      "_rating": 3.9,
+      "_reviews": 162
+    },
+    "mpobacholfblmnpnfbiomjkecoojakah": {
+      "web accessibility testing": 9,
+      "accessibility testing for developers": null,
+      "_users": 50000,
+      "_rating": 4.5,
+      "_reviews": 38
+    }
   }
 }
